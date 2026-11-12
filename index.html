@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#183c32">
+  <meta name="description" content="Comprendre les réseaux de neurones convolutifs en observant, en manipulant et en calculant. Un cours interactif pour débuter en IA, par Moussa Diallo, DIT.">
+  <title>CNN Explorer — Voir, manipuler, comprendre</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson">Aller au cours</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Plan du cours">
+      <a class="brand" href="#/voir-comprendre" aria-label="CNN Explorer, accueil"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>CNN<span class="brand-light"> Explorer</span><small>LE LABORATOIRE VISUEL</small></span></a>
+      <div class="course-label">DEEP LEARNING <span>CH. 03</span></div>
+      <nav id="course-nav" aria-label="Diapositives"></nav>
+      <div class="sidebar-bottom"><div class="teacher-avatar">MD</div><div><strong>Moussa Diallo</strong><span>Dakar Institute of Technology</span></div></div>
+    </aside>
+    <button class="mobile-scrim" id="scrim" aria-label="Fermer le plan" hidden></button>
+    <div class="main-shell">
+      <header class="topbar">
+        <button id="menu-button" class="icon-button mobile-menu" aria-label="Ouvrir le plan" aria-expanded="false">☰</button>
+        <div class="breadcrumb"><span>Le laboratoire</span><span class="crumb-slash">/</span><strong>Comprendre les CNN</strong></div>
+        <div class="top-actions"><button class="text-button" id="glossary-button" aria-label="Lexique"><span aria-hidden="true">Aa</span> <span class="button-word">Lexique</span></button><button class="text-button" id="notes-button" aria-label="Notes enseignant" aria-pressed="false"><span aria-hidden="true">▤</span> <span class="button-word">Notes enseignant</span></button><button class="icon-button" id="present-button" title="Mode présentation (F)" aria-label="Activer le mode présentation" aria-pressed="false">⛶</button></div>
+      </header>
+      <main id="lesson" tabindex="-1" aria-label="Diapositive du cours"></main>
+      <footer class="navigation-bar">
+        <button class="btn nav-prev" id="previous"><span aria-hidden="true">←</span> <span>Précédent</span></button>
+        <div class="slide-position"><div><span id="slide-count">01 / 27</span><span class="keyboard-tip">Utilisez les flèches <kbd>←</kbd> <kbd>→</kbd></span></div><div class="progress-track" role="progressbar" aria-label="Position dans le cours" aria-valuemin="1" aria-valuemax="27" aria-valuenow="1"><span id="progress-fill"></span></div></div>
+        <button class="btn primary nav-next" id="next">Suivant <span aria-hidden="true">→</span></button>
+      </footer>
+    </div>
+  </div>
+  <dialog id="glossary-dialog" aria-labelledby="glossary-title"><div class="dialog-header"><span class="eyebrow">UN MOT, UNE IDÉE</span><button class="icon-button" data-close aria-label="Fermer le lexique">✕</button></div><h2 id="glossary-title">Le petit lexique des CNN</h2><div id="glossary-content"></div><p class="muted">Le cours et les démonstrations fonctionnent dans votre navigateur. Aucune donnée n’est envoyée.</p></dialog>
+  <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
+  <noscript>Activez JavaScript pour parcourir le cours et manipuler les expériences.</noscript>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

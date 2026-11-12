@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Fiche mémo du cours interactif CNN Explorer : opérations, dimensions, paramètres et exercice corrigé.">
+  <title>Fiche mémo · CNN Explorer</title>
+  <style>
+    :root{color-scheme:light;--paper:#fffef9;--cream:#f2efe5;--ink:#243a32;--green:#326d51;--line:#d9dfd0;--muted:#607267;--light:#edf3e8}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);font-family:Arial,Helvetica,sans-serif;color:var(--ink);font-size:14px;line-height:1.45}a{color:var(--green)}.tools{max-width:900px;margin:22px auto;display:flex;justify-content:space-between;align-items:center;padding:0 24px;color:var(--muted)}button{border:0;border-radius:8px;background:var(--green);color:white;padding:11px 18px;font:inherit;cursor:pointer}.page{background:var(--paper);width:210mm;min-height:297mm;margin:24px auto;padding:16mm 17mm 13mm;box-shadow:0 12px 50px #243a3214;position:relative}.eyebrow{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green)}header{border-bottom:2px solid var(--green);padding-bottom:15px;margin-bottom:18px}h1{font-size:34px;letter-spacing:-1.2px;line-height:1.1;margin:9px 0 10px}h2{font-size:19px;letter-spacing:-.3px;margin:20px 0 10px}h3{font-size:14px;margin:0 0 5px}p{margin:6px 0}.subtitle{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.box{border:1px solid var(--line);border-radius:10px;padding:11px 13px}.box h3 span{font-size:10px;border:1px solid var(--line);padding:2px 6px;border-radius:20px;margin-left:5px;color:var(--muted);white-space:nowrap}.box p{font-size:12px}.formula{padding:13px 16px;background:var(--light);border-left:3px solid var(--green);font-size:16px;font-weight:700;border-radius:0 8px 8px 0}.formula small{display:block;font-size:11px;font-weight:400;margin-top:5px;color:var(--muted)}.legend{font-size:12px;margin-top:9px;color:var(--muted)}table{border-collapse:collapse;width:100%;font-size:12px;margin:12px 0}th{text-align:left;background:var(--light);font-weight:700}td,th{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}td:last-child{font-weight:700;white-space:nowrap}.alert{margin-top:12px;border:1px solid #d8caa0;background:#fbf7e9;border-radius:10px;padding:10px 13px;font-size:12px}.number{font-size:30px;line-height:1.1;letter-spacing:-.8px;font-weight:700;margin:8px 0;color:var(--green)}.tiny{font-size:11px;color:var(--muted)}.chain{display:flex;align-items:center;justify-content:space-between;gap:5px;margin:12px 0;padding:12px 9px;border:1px solid var(--line);border-radius:10px;font-size:11px;text-align:center}.chain b{display:block;font-size:12px}.chain i{color:var(--green);font-style:normal}.sources{font-size:10px;line-height:1.45;margin-top:14px;overflow-wrap:anywhere}.sources a{display:block;margin-top:3px}.footer{margin-top:20px;padding-top:9px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}.rule{font-size:13px;border-top:1px solid var(--line);padding-top:9px;margin-top:9px}.prompt{font-size:12px;font-weight:700;color:var(--green);margin:12px 0 0}.badge{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:2px 8px;font-size:10px;color:var(--muted)}
+    @page{size:A4;margin:0}
+    @media print{body{background:white;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.tools{display:none}.page{margin:0;padding:13mm 15mm;box-shadow:none;min-height:0;height:297mm;break-after:page}.page:last-child{break-after:auto}header{padding-bottom:10px;margin-bottom:14px}h1{font-size:30px}h2{font-size:17px;margin:16px 0 8px}.grid{gap:8px}.box{padding:9px 11px}.box p{font-size:11.5px;line-height:1.35}.formula{font-size:14px;padding:10px 13px}.formula small{font-size:10.5px}.legend{font-size:11px}.alert{font-size:11px;padding:9px 11px;margin-top:9px}.footer{margin-top:14px}a{text-decoration:none}.box,table,.alert,.chain{break-inside:avoid}}
+    @media screen and (max-width:820px){.page{width:auto;min-height:0;margin:12px;padding:24px}.tools{gap:15px;font-size:12px}.grid{grid-template-columns:1fr}.chain{flex-wrap:wrap;justify-content:center;gap:12px}h1{font-size:29px}table{font-size:10px}td,th{padding:7px 5px}td:last-child{white-space:normal}}
+  </style>
+</head>
+<body>
+  <div class="tools"><span>Fiche de révision · 2 pages A4</span><button type="button" onclick="window.print()">Imprimer / enregistrer en PDF</button></div>
+  <main>
+    <section class="page" aria-label="Page 1 : les opérations et les dimensions">
+      <header><div class="eyebrow">DIT · Deep learning · Chapitre 03</div><h1>Les CNN, une brique à la fois.</h1><p class="subtitle">Fiche mémo du cours de Moussa Diallo · Première année IA</p></header>
+      <div class="formula">Un neurone : z = Σ(xᵢ × wᵢ) + b, puis y = activation(z)<small>Entrées × poids → somme + biais → activation. Un CNN reprend cette recette sur de petites régions de l’image.</small></div>
+      <h2>Les opérations à distinguer</h2>
+      <div class="grid">
+        <article class="box"><h3>01 · Convolution <span>poids appris</span></h3><p>Multiplier les pixels d’une fenêtre par les poids du filtre, additionner, ajouter le biais. Déplacer <strong>le même filtre</strong> pour obtenir une carte.</p><p><strong>K filtres → K canaux de sortie.</strong> Un filtre standard couvre tous les canaux de l’entrée.</p></article>
+        <article class="box"><h3>02 · ReLU <span>aucun poids</span></h3><p><strong>ReLU(x) = max(0, x).</strong> Les valeurs négatives deviennent 0 ; les positives restent identiques.</p><p>Exemple : [−4, 0, 3] → [0, 0, 3]. La forme du tableau reste la même.</p></article>
+        <article class="box"><h3>03 · Pooling <span>aucun poids</span></h3><p>Résumer chaque petite région, canal par canal : garder le <strong>maximum</strong> ou calculer la <strong>moyenne</strong>.</p><p>Bloc [1, 7 ; 3, 5] : max = 7, moyenne = 4. Fenêtre 2 × 2, pas 2 : hauteur et largeur sont divisées par 2 si elles sont paires.</p></article>
+        <article class="box"><h3>04 · Flatten <span>aucun poids</span></h3><p><strong>H × W × C → H·W·C valeurs.</strong> Dérouler les éléments en une liste, sans en supprimer.</p><p>Exemple : 4 × 4 × 8 → 128 valeurs. Flatten ne réduit pas le nombre d’éléments.</p></article>
+        <article class="box"><h3>05 · Couche dense <span>poids appris</span></h3><p>Combiner toutes les entrées pour produire des scores. Dans une classification multiclasse, softmax peut convertir les scores en sorties dont la somme vaut 1.</p></article>
+        <article class="box"><h3>06 · Apprentissage</h3><p><strong>Prédire → calculer la perte → calculer les gradients → ajuster les poids.</strong></p><p>La rétropropagation calcule les gradients. Des données séparées évaluent la généralisation.</p></article>
+      </div>
+      <h2>Prévoir la forme d’une convolution</h2>
+      <div class="formula">N<sub>sortie</sub> = ⌊(N − F + 2P) / S⌋ + 1<small>À appliquer séparément à la hauteur et à la largeur. ⌊…⌋ signifie « arrondir vers le bas ». Sans dilatation.</small></div>
+      <p class="legend"><strong>N</strong> : taille d’entrée · <strong>F</strong> : taille du filtre · <strong>P</strong> : bordure ajoutée de chaque côté · <strong>S</strong> : stride, ou pas.</p>
+      <p class="rule"><strong>Exemple :</strong> N = 7, F = 3, P = 0, S = 2 → ⌊4/2⌋ + 1 = <strong>3</strong>. Avec 8 filtres, une entrée carrée donne une sortie <strong>3 × 3 × 8</strong>.</p>
+      <div class="alert"><strong>À ne pas confondre.</strong> Le stride modifie l’espacement des positions, pas la taille du filtre. Pour un filtre impair et S = 1, P = (F − 1)/2 conserve la taille spatiale. Ajouter du padding n’ajoute aucune information provenant de la scène.</div>
+      <div class="footer"><span>CNN Explorer · Voir, manipuler, comprendre</span><span>01 / 02</span></div>
+    </section>
+    <section class="page" aria-label="Page 2 : les exemples et l’exercice corrigé">
+      <header><div class="eyebrow">DIT · Deep learning · Chapitre 03</div><h1>Compter. Vérifier. Expliquer.</h1><p class="subtitle">Deux questions à chaque couche : quelle taille spatiale ? combien de canaux ?</p></header>
+      <h2>Pourquoi partager les poids ?</h2>
+      <p>Une image RGB de <strong>32 × 32 × 3</strong> contient <strong>3 072 valeurs</strong>. Comptons les paramètres d’une seule couche, biais inclus :</p>
+      <div class="grid">
+        <article class="box"><span class="badge">Couche dense · 100 neurones</span><div class="number">307 300</div><p>(3 072 entrées + 1 biais) × 100 neurones.</p><p>Chaque neurone possède ses propres poids pour toutes les entrées.</p></article>
+        <article class="box"><span class="badge">Convolution · 16 filtres 3 × 3</span><div class="number">448</div><p>(3 × 3 × 3 poids + 1 biais) × 16 filtres.</p><p>Les poids sont réutilisés à toutes les positions. Avec S1/P1, sortie : 32 × 32 × 16.</p></article>
+      </div>
+      <p class="tiny">Ces couches ont des sorties différentes : ce comptage illustre le partage des poids, sans comparer à lui seul la qualité des modèles. Formule convolution standard : (F² × C<sub>entrée</sub> + 1) × K.</p>
+      <h2>L’exercice du support, corrigé</h2>
+      <p>Entrée : <strong>256 × 256 × 3</strong>. Convention : hauteur × largeur × canaux.</p>
+      <table>
+        <thead><tr><th>Couche</th><th>Calcul spatial</th><th>Forme de sortie</th></tr></thead>
+        <tbody>
+          <tr><td>Conv · 16 filtres, F3, S1, P1</td><td>⌊(256 − 3 + 2)/1⌋ + 1 = 256</td><td>256 × 256 × 16</td></tr>
+          <tr><td>Pooling · F2, S2, P0</td><td>⌊(256 − 2)/2⌋ + 1 = 128</td><td>128 × 128 × 16</td></tr>
+          <tr><td>Conv · 8 filtres, F7, S1, P3</td><td>⌊(128 − 7 + 6)/1⌋ + 1 = 128</td><td>128 × 128 × 8</td></tr>
+          <tr><td>Pooling · F2, S2, P0</td><td>⌊(128 − 2)/2⌋ + 1 = 64</td><td>64 × 64 × 8</td></tr>
+        </tbody>
+      </table>
+      <p class="prompt">À justifier : les convolutions fixent les canaux par leur nombre de filtres ; le pooling conserve les canaux.</p>
+      <h2>Lire un réseau : l’exemple LeNet-5</h2>
+      <div class="chain"><span><b>Entrée</b>32² × 1</span><i>→</i><span><b>C1</b>28² × 6</span><i>→</i><span><b>S2</b>14² × 6</span><i>→</i><span><b>C3</b>10² × 16</span><i>→</i><span><b>S4</b>5² × 16</span><i>→</i><span><b>C5</b>120</span><i>→</i><span><b>F6</b>84</span><i>→</i><span><b>Sortie</b>10</span></div>
+      <p class="tiny">Schéma des dimensions de LeNet-5 original (1998) ; 32² signifie 32 × 32. C5 est un volume 1 × 1 × 120. Le modèle historique comporte des activations de type tanh, du sous-échantillonnage avec paramètres et une sortie RBF. ReLU, max pooling et softmax décrivent une adaptation moderne, pas exactement l’original.</p>
+      <div class="alert"><strong>Trois idées à garder précises.</strong> Une convolution déplacée répond à un motif déplacé : elle ne garantit pas l’invariance à toute translation. Un pooling peut perdre une information utile. Une forte sortie softmax ou une faible perte d’entraînement ne garantit pas une bonne prédiction sur de nouvelles images.</div>
+      <div class="sources"><strong>Support :</strong> chapitre CNN de Moussa Diallo, DIT, diapositives 6–19 ; exercice repris de la diapositive 19. <strong>Vérifications :</strong><a href="https://docs.pytorch.org/docs/2.15/generated/torch.nn.modules.conv.Conv2d.html">PyTorch — Conv2d : opération, canaux et dimensions</a><a href="https://leon.bottou.org/publications/pdf/ieee-1998.pdf">LeCun, Bottou, Bengio &amp; Haffner (1998) — Gradient-Based Learning Applied to Document Recognition</a></div>
+      <div class="footer"><span>Cours de Moussa Diallo · Fiche de révision</span><span>02 / 02</span></div>
+    </section>
+  </main>
+</body>
+</html>

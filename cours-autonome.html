@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#183c32">
+  <meta name="description" content="Comprendre les réseaux de neurones convolutifs en observant, en manipulant et en calculant. Un cours interactif pour débuter en IA, par Moussa Diallo, DIT.">
+  <title>CNN Explorer — Voir, manipuler, comprendre</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23183c32%22/%3E%3Ctext x=%226%22 y=%2223%22 fill=%22%23d9ef94%22 font-size=%2220%22%3EC%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+  <style>
+:root{--ink:#17392f;--muted:#758079;--paper:#f4f5ef;--white:#fff;--line:#e2e7de;--green:#235c46;--mint:#e8f2e8;--lime:#d9ef94;--orange:#d17c4b;--orange-light:#fcf0e7;--blue:#557eab;--radius:16px;--shadow:0 7px 24px #203d2a06;font-family:Inter,"Avenir Next",Avenir,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);font-size:15px;line-height:1.55}button,input,select{font:inherit}button,a,input,select{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit}button{color:inherit}button:disabled{cursor:default;opacity:.4}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #c8814f;outline-offset:4px}button,input,select{border-radius:8px}h1,h2,h3,p{margin-top:0}h1,h2,h3{line-height:1.17}h1{font-size:clamp(30px,3vw,43px);font-weight:600;letter-spacing:-1.5px;margin-bottom:14px}h2{font-size:26px;letter-spacing:-.7px}h3{font-size:17px}p{margin-bottom:16px}svg{max-width:100%;height:auto}button svg{width:18px;height:18px}.app-shell{display:flex;min-height:100vh}.sidebar{width:256px;position:fixed;inset:0 auto 0 0;background:var(--ink);color:#d7e4da;padding:30px 19px 0;display:flex;flex-direction:column;z-index:20}.brand{text-decoration:none;display:flex;align-items:center;gap:11px;font-size:22px;font-weight:650;letter-spacing:-.6px;padding:0 6px 28px;color:#fff}.brand-light{font-weight:350}.brand small{display:block;font-size:8px;letter-spacing:1.75px;font-weight:500;color:#9db6a8;margin-top:3px}.brand-mark{display:grid;grid-template-columns:repeat(3,5px);gap:3px;transform:rotate(-6deg)}.brand-mark i{width:5px;height:5px;background:var(--lime);border-radius:1px}.brand-mark i:nth-child(3n+1){opacity:.45}.brand-mark i:nth-child(5){opacity:1}.course-label{border-top:1px solid #ffffff12;display:flex;justify-content:space-between;font-size:10px;letter-spacing:1.5px;padding:21px 9px 17px;color:#9eb3a7}.course-label span{color:var(--lime);font-size:9px;letter-spacing:.6px}#course-nav{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#ffffff25 transparent;flex:1;padding-bottom:18px}.nav-section{margin-bottom:14px}.section-title{font-size:11px;color:#a6bbae;letter-spacing:.15px;display:flex;align-items:center;gap:10px;margin:0;padding:9px;width:100%;background:none;border:0;text-align:left}.section-title .section-number{font-size:10px;opacity:.7}.section-title .chevron{margin-left:auto;font-size:10px}.section-items[hidden]{display:none}.nav-link{border:0;display:flex;align-items:center;gap:10px;background:transparent;border-radius:7px;color:#b5c7bb;text-align:left;padding:7px 10px;width:100%;font-size:11px;line-height:1.35;margin-bottom:2px;transition:background .15s}.nav-link:hover{background:#ffffff08;color:white}.nav-link[aria-current="step"]{background:#d9ef94;color:#17392f;font-weight:650}.nav-link .nav-dot{width:4px;height:4px;border:1px solid currentColor;border-radius:50%;flex:none;opacity:.5}.nav-link.visited .nav-dot{background:currentColor}.nav-link[aria-current="step"] .nav-dot{background:var(--ink);opacity:1}.nav-duration{margin-left:auto;font-size:9px;opacity:.65;white-space:nowrap}.sidebar-bottom{display:flex;align-items:center;gap:10px;padding:17px 7px;border-top:1px solid #ffffff15;font-size:10px}.sidebar-bottom strong{display:block;font-size:11px;color:#e4ede7;font-weight:500}.sidebar-bottom span{display:block;color:#96afa0;font-size:9px;margin-top:2px}.teacher-avatar{height:32px;width:32px;border:1px solid #ffffff25;border-radius:50%;display:grid;place-items:center;color:var(--lime);font-size:10px}.main-shell{margin-left:256px;width:calc(100% - 256px);min-width:0;padding-bottom:96px}.topbar{height:78px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 42px;gap:16px;background:#f4f5effa}.breadcrumb{display:flex;gap:13px;font-size:11px;align-items:center}.breadcrumb>span:first-child{color:var(--muted)}.breadcrumb strong{font-weight:500}.crumb-slash{color:#bcc5bb}.top-actions{display:flex;align-items:center;gap:16px}.text-button{border:0;background:transparent;display:flex;align-items:center;gap:7px;padding:7px 0;font-size:10px;white-space:nowrap;color:#5b6b60}.text-button[aria-pressed="true"]{color:var(--green);font-weight:700}.text-button>span:first-child{font-size:14px}.icon-button{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line);background:transparent;font-size:21px;line-height:1;flex:none}.icon-button:hover{background:var(--mint)}.mobile-menu{display:none}main{max-width:1450px;margin:0 auto;padding:32px 42px 24px;outline:none}.lesson-topline{display:flex;align-items:center;gap:13px;margin-bottom:19px}.eyebrow{font-size:10px;font-weight:650;letter-spacing:1.7px;text-transform:uppercase;color:var(--green)}.lesson-topline .divider{height:12px;width:1px;background:#c8d0c5}.lesson-topline .time{font-size:10px;color:var(--muted)}.lesson-header{max-width:950px}.lesson-intro{font-size:14px;color:#6c786e;max-width:790px;line-height:1.7;margin-bottom:25px}.lab{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.lab-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:24px}.lab-toolbar button,.lab-toolbar select{font-size:12px}.control{display:flex;align-items:center;gap:8px;font-size:12px;color:#5a6c60}.control select,select{background:#f4f6ef;border:1px solid var(--line);padding:7px 10px;color:var(--ink)}.control input[type="range"]{width:112px}.control input[type="number"]{width:72px}.btn{padding:10px 16px;border:1px solid var(--line);background:#fff;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:500;font-size:12px;min-height:40px;transition:background .2s,transform .2s;text-decoration:none}.btn:hover:not(:disabled){background:var(--mint);transform:translateY(-1px)}.btn.primary{background:var(--green);color:white;border-color:var(--green)}.btn.primary:hover:not(:disabled){background:#174735}.btn.small{font-size:11px;min-height:32px;padding:5px 12px}.btn.ghost{background:transparent;border-color:transparent;color:var(--green)}.btn.lime{background:var(--lime);color:var(--ink);border-color:var(--lime)}.btn.orange{background:var(--orange-light);border-color:#eed1bc}.pill{font-size:10px;border-radius:5px;background:#f0f4eb;color:#53705a;padding:5px 8px;display:inline-block;line-height:1.4}.pill.orange{background:var(--orange-light);color:#a26032}.pill.green{background:var(--mint);color:var(--green)}.lab-caption{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:16px;gap:12px}.matrix{display:grid;grid-template-columns:repeat(var(--cols,5),var(--cell-size,39px));gap:5px;justify-content:center;margin:12px auto;width:max-content;max-width:100%}.cell{height:var(--cell-size,39px);min-width:0;display:flex;align-items:center;justify-content:center;font-size:12px;line-height:1;border:1px solid #e4e8df;background:#f0f3ec;border-radius:5px;font-variant-numeric:tabular-nums;position:relative;color:#5e7664}.cell.positive,.cell.on{background:#c5ddab;border-color:#bdd59e;color:#294f32}.cell.negative{background:#f9e5d4;border-color:#f1d3b6;color:#a15c31}.cell.active,.cell.selected{outline:2px solid var(--green);outline-offset:-2px;background:#d9edb8;color:var(--ink);z-index:1}.cell.window{background:#d9edb8;outline:1px solid #77a15c}.cell.focus-cell{background:var(--green);color:#fff}.cell.zero-pad{background:repeating-linear-gradient(45deg,#f4f5f1,#f4f5f1 3px,#e9ede4 3px,#e9ede4 4px);color:#9aa594}.cell small{position:absolute;bottom:3px;right:3px;font-size:7px;color:#44603f}.matrix-label{font-size:10px;letter-spacing:1px;text-align:center;color:#64806b;font-weight:600;text-transform:uppercase}.matrix-group{text-align:center;min-width:0}.matrix-group .shape{font-size:11px;color:#8b958b}.lab-columns{display:flex;justify-content:space-evenly;align-items:center;gap:20px;flex-wrap:wrap}.operator{font-size:23px;color:#9baa98;font-weight:300}.equation{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;background:#f4f6ef;border-radius:10px;padding:14px 18px;text-align:center;margin:20px 0 0;line-height:1.8;overflow-wrap:anywhere}.equation strong{color:var(--green)}.hint,.lab-note{font-size:11px;line-height:1.7;color:#7a877b;margin:13px 0 0}.hint{text-align:center}.feedback{padding:14px 17px;border-radius:9px;font-size:13px;line-height:1.7;margin-top:16px;background:var(--mint);border:1px solid #d9e8d4}.feedback.error{background:var(--orange-light);border-color:#f0d8c5}.feedback:empty{display:none}.takeaway{display:flex;align-items:flex-start;gap:13px;padding:19px 0 0;font-size:12px;color:#5c705e;line-height:1.7}.takeaway .bulb{border:1px solid #dae2d4;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;font-size:12px;flex:none}.takeaway strong{color:var(--ink);font-weight:600}.takeaway p{margin:0}.navigation-bar{position:fixed;bottom:0;left:256px;right:0;height:86px;display:flex;align-items:center;gap:30px;padding:0 42px;border-top:1px solid var(--line);background:#f9faf4f7;backdrop-filter:blur(15px);z-index:10}.navigation-bar .btn{min-width:120px}.nav-prev{background:transparent;border:0;padding-left:0;justify-content:flex-start}.slide-position{flex:1;max-width:460px;margin:0 auto}.slide-position>div:first-child{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}#slide-count{font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:1px}.keyboard-tip{font-size:9px;color:#8b958a}.keyboard-tip kbd{font-family:inherit;display:inline-flex;align-items:center;justify-content:center;border:1px solid #dce1d6;border-radius:3px;width:17px;height:16px;margin-left:3px}.progress-track{height:3px;background:#dfe7d8;overflow:hidden;border-radius:3px}.progress-track span{display:block;height:100%;background:var(--green);transition:width .25s}.hero{padding:0}.hero-main{border:1px solid var(--line);border-radius:18px;background:white;overflow:hidden;display:grid;grid-template-columns:1.04fr 1fr;min-height:395px;box-shadow:var(--shadow)}.hero-copy{padding:39px 0 36px 35px;position:relative;z-index:1}.hero-copy .eyebrow{font-size:9px;letter-spacing:1.5px;display:flex;align-items:center;gap:7px}.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}.hero h1{font-family:Georgia,"Times New Roman",serif;letter-spacing:-1.7px;font-size:clamp(37px,4.1vw,61px);font-weight:400;line-height:1.06;margin:22px 0 20px}.hero h1 em{color:#548268;font-weight:400;font-style:italic}.hero-copy>p{font-size:12px;line-height:1.85;color:#7d867c;max-width:350px;margin-bottom:24px}.hero-actions{display:flex;gap:15px;align-items:center}.hero-actions small{font-size:10px;color:#9a9f93}.hero-actions .btn{padding:12px 18px;font-size:11px}.hero-visual{background:radial-gradient(ellipse at 50% 50%,#ebf2e3 0,transparent 65%);position:relative;display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden}.hero-visual:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#a2b49745 .7px,transparent .7px);background-size:17px 17px;mask-image:linear-gradient(90deg,transparent,black 30%,black)}.hero-visual svg{position:relative;width:100%;min-width:300px;max-height:370px;overflow:visible}.visual-tag{position:absolute;bottom:25px;font-size:9px;color:#7b8d76;letter-spacing:.3px}.hero-method{display:grid;grid-template-columns:repeat(3,1fr);padding:25px 0 22px;border-bottom:1px solid var(--line);gap:25px}.method-step{display:flex;align-items:flex-start;gap:12px}.method-step>span{height:29px;width:29px;display:grid;place-items:center;border:1px solid #dbe2d2;border-radius:8px;font-size:11px;flex:none;color:var(--green)}.method-step strong{font-size:12px;font-weight:600;display:block;margin:2px 0 3px}.method-step p{font-size:10px;color:#86917f;margin:0}.hero-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-top:20px}.hero-bottom>div:first-child{display:flex;gap:12px;align-items:center}.mission-icon{font-size:22px;color:#6c8b60}.hero-bottom p{font-size:11px;color:#86917f;margin:0}.hero-bottom strong{display:block;color:var(--ink);font-weight:500;font-size:12px;margin-bottom:3px}.hero-tag{font-size:9px;white-space:nowrap;display:flex;gap:6px;align-items:center;color:#86917f}.mini-dot{height:5px;width:5px;border-radius:50%;background:#79a354}.teacher-notes{margin-top:18px;background:#fff8e9;border:1px solid #eee2bf;border-left:3px solid #caa66a;border-radius:9px;padding:17px 21px;font-size:12px;color:#776342}.teacher-notes strong{font-size:10px;text-transform:uppercase;letter-spacing:1px}.teacher-notes p{margin:7px 0}.teacher-notes .source-note{font-size:10px;color:#9e8a68;border-top:1px solid #e9dfca;padding-top:9px;margin-bottom:0}.question-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin:0 0 15px}.choices{display:grid;gap:9px}.choice{padding:13px 17px;border:1px solid var(--line);background:#fff;text-align:left;display:flex;align-items:center;gap:12px;font-size:13px}.choice span{display:grid;place-items:center;border:1px solid var(--line);background:#f6f7f1;width:25px;height:25px;border-radius:6px;font-size:10px;flex:none}.choice:hover{background:#f5f8ed}.choice.correct{background:var(--mint);border-color:#90b87b}.choice.wrong{background:var(--orange-light);border-color:#dca976}.choice.chosen{box-shadow:0 0 0 1px currentColor}.mini-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:17px 0}.mini-stat,.stat{background:#f6f8f1;border:1px solid var(--line);border-radius:10px;padding:13px 18px;text-align:center}.mini-stat strong,.stat strong{display:block;font-size:24px;letter-spacing:-.8px;font-weight:550}.mini-stat span,.stat span{font-size:10px;color:var(--muted)}.input-card{background:#f6f8f1;border:1px solid var(--line);border-radius:12px;padding:20px}.range-row{display:flex;align-items:center;gap:13px;font-size:12px;margin:12px 0}.range-row label{min-width:75px}.range-row output{min-width:35px;font-variant-numeric:tabular-nums}.range-row input{flex:1;min-width:0}input[type="range"]{accent-color:var(--green)}input[type="number"]{border:1px solid #dce5d4;background:white;padding:7px 9px;color:var(--ink)}.neuron-diagram{display:flex;align-items:center;gap:15px;flex:1;justify-content:center}.neuron-circle{width:100px;height:100px;border:2px solid #749d62;border-radius:50%;background:#f0f7e7;display:flex;flex-direction:column;align-items:center;justify-content:center}.neuron-circle b{font-size:28px;font-weight:400}.neuron-circle small{font-size:10px;color:#6c8265}.signal-list{display:flex;flex-direction:column;gap:20px}.signal{display:flex;align-items:center;gap:8px;font-size:11px}.signal-dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#f1f5e9;border:1px solid #b8cda6}.signal-wire{width:48px;height:1px;background:#9ab481}.result-number{font-size:32px;font-weight:500;color:var(--green)}.output-block{text-align:center}.output-block small{font-size:10px;color:var(--muted);display:block}.output-block strong{display:block;font-size:24px}.network-figure{max-width:660px;margin:0 auto}.network-figure svg{display:block;width:100%}.svg-label{font:11px Inter,Arial,sans-serif;fill:#7d8e79}.svg-label-dark{font:12px Inter,Arial,sans-serif;fill:#274e36}.layer-buttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px 0}.layer-info{max-width:600px;margin:0 auto;text-align:center;font-size:13px;min-height:65px;color:#6d7d6c}.pixel-demo{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.pixel-preview{display:flex;align-items:center;justify-content:center;gap:30px}.pixel-preview svg{width:170px}.pixel-readout{max-width:350px}.pixel-readout h3{font-size:20px}.pixel-readout p{font-size:12px;color:#7b8978}.interactive-cell{cursor:pointer;transition:background .15s}.filter-results{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.filter-panel{padding:14px;border:1px solid var(--line);border-radius:11px;text-align:center;background:#fbfcf8}.filter-panel h3{font-size:12px;margin:0 0 10px}.filter-panel .matrix{--cell-size:27px;gap:3px}.filter-panel .cell{font-size:10px}.filter-explanation{max-width:500px;margin:auto;text-align:center;font-size:12px;color:#7a8b74}.params-compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}.params-card{padding:24px;border-radius:12px;border:1px solid var(--line);background:#f7f8f3}.params-card:last-child{background:#edf5e5;border-color:#cee0bd}.params-card>span{font-size:10px;letter-spacing:1px}.params-card strong{display:block;font-size:36px;letter-spacing:-1px;margin:18px 0 3px;font-weight:500}.params-card p{font-size:11px;color:#7b8a73}.params-card code{font-size:11px;line-height:1.6;overflow-wrap:anywhere}.local-graphic{display:flex;align-items:center;justify-content:center;gap:35px;flex-wrap:wrap}.local-detail{max-width:280px}.local-detail p{font-size:12px;color:#788775}.local-detail h3{font-family:Georgia,serif;font-size:28px;font-weight:400}.rgb-planes{display:flex;justify-content:center;align-items:center;gap:30px;flex-wrap:wrap}.rgb-plane{padding:18px 22px;border-radius:12px;background:#fdf3f0}.rgb-plane:nth-child(2){background:#f0f7ed}.rgb-plane:nth-child(3){background:#f0f3fa}.rgb-plane input{width:110px}.rgb-plane label{font-size:11px;display:block;text-align:center}.rgb-swatch{width:100px;height:100px;border-radius:15px;box-shadow:inset 0 0 0 1px #0001;transition:background .15s}.architecture-flow{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:15px 0}.flow-block{padding:20px 12px;border:1px solid var(--line);background:#f4f7ee;border-radius:10px;text-align:center;min-width:80px}.flow-block strong{font-size:11px;display:block}.flow-block small{font-size:9px;color:#71846b;display:block;margin-top:7px}.flow-block.active{background:var(--lime);border-color:#9fbf64}.flow-arrow{font-size:14px;color:#9baa90}.architecture-detail{background:#f7f9f3;padding:18px;border-radius:10px;font-size:12px;margin-top:15px}.flatten-vector{display:flex;gap:3px;flex-wrap:wrap;max-width:410px;justify-content:center}.flatten-vector .cell{width:29px;height:36px;font-size:10px}.channel-label{font-size:10px;color:#7f8d77;text-align:center}.softmax-bars{max-width:560px;margin:22px auto}.prob-row{display:grid;grid-template-columns:75px 1fr 50px;gap:15px;align-items:center;font-size:12px;margin:16px 0}.bar-track{height:24px;background:#f1f4eb;border-radius:5px;overflow:hidden}.bar-fill{height:100%;background:#b5d799;border-radius:5px;transition:width .3s}.bar-fill.win{background:var(--green)}.exercise-row{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:11px}.exercise-row:last-child{border:0}.exercise-row input{width:100%;min-width:0;padding:8px 5px;text-align:center}.exercise-header{font-size:9px;color:#91a087;text-transform:uppercase}.exercise-row .layer-description{display:block;color:#85917c;font-size:9px;margin-top:4px}.exercise-row.correct-row input{background:var(--mint);border-color:#9dc389}.exercise-row.wrong-row input{background:var(--orange-light);border-color:#e0b28c}.exercise-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.quiz-progress{display:flex;justify-content:space-between;font-size:11px;color:#7a8a72;margin-bottom:22px}.quiz-title{font-size:21px;max-width:720px;margin-bottom:22px}.quiz-summary{text-align:center;padding:15px}.quiz-summary strong{font-family:Georgia,serif;font-size:70px;font-weight:400;display:block}.quiz-review{margin-top:20px;text-align:left}.quiz-review p{border-bottom:1px solid var(--line);font-size:12px;padding:12px 0}.recap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.recap-card{padding:22px;border:1px solid var(--line);border-radius:12px;background:#fbfcf8}.recap-card>span{font-family:Georgia,serif;font-size:28px;color:#88a274}.recap-card h3{font-size:14px;margin:12px 0 8px}.recap-card p{font-size:11px;color:#7d8b75;margin:0}.finish{text-align:center;padding:35px 20px}.finish-symbol{height:65px;width:65px;background:var(--lime);border-radius:50%;display:grid;place-items:center;font-size:27px;margin:0 auto 24px}.finish h2{font-family:Georgia,serif;font-size:36px;font-weight:400}.finish>p{font-size:13px;color:#7d8b75;max-width:490px;margin:0 auto 25px}.finish-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.source-links{font-size:10px;color:#8c9684;line-height:1.8;margin-top:25px}.source-links a{text-underline-offset:3px}.challenge-tasks{font-size:13px;padding-left:22px;line-height:2}.challenge-tasks li::marker{color:var(--green)}.challenge-answer{padding:15px;background:#f4f7ed;border-radius:9px;font-size:12px;margin-top:16px}.lenet-caption{text-align:center;max-width:700px;font-size:12px;margin:18px auto;color:#7d8b75}dialog{border:1px solid var(--line);border-radius:18px;padding:28px 32px;max-width:660px;width:calc(100% - 35px);max-height:85vh;overflow-y:auto;color:var(--ink);box-shadow:0 20px 100px #12291f30}dialog::backdrop{background:#163b3270;backdrop-filter:blur(4px)}.dialog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}dialog h2{font-family:Georgia,serif;font-weight:400;font-size:30px}dialog dl{margin:0}dialog dt{font-size:12px;font-weight:650;margin:17px 0 3px}dialog dd{font-size:12px;color:#71806a;margin:0;padding-bottom:13px;border-bottom:1px solid var(--line)}.muted{color:var(--muted);font-size:10px;margin-top:20px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.skip-link{position:fixed;top:-100px;left:20px;background:var(--lime);color:var(--ink);padding:10px;z-index:100}.skip-link:focus{top:10px}.mobile-scrim{display:none}.presenting .sidebar{display:none}.presenting .main-shell{margin-left:0;width:100%}.presenting .navigation-bar{left:0}.presenting main{max-width:1320px}.presenting .topbar{height:60px}.presenting h1{font-size:44px}.presenting .lesson-intro{font-size:17px}.presenting .takeaway{font-size:15px}.presenting .lab{min-height:310px}.presenting .cell{--cell-size:45px}.presenting .hero h1{font-size:65px}.presenting .hero-main{min-height:440px}.presenting .hero-copy{padding:50px}.presenting .hero-copy>p{font-size:15px}.presenting .hero-visual svg{max-height:440px}.presenting .lab-note,.presenting .hint{font-size:13px}.presenting .keyboard-tip{display:none}
+@media(min-width:1600px){main{padding-top:42px}.hero-main{min-height:475px}.hero-copy{padding-top:50px;padding-left:45px}.hero-visual svg{max-height:460px}.hero h1{font-size:65px}.hero-copy>p{font-size:14px}.lab{padding:35px}.cell{--cell-size:46px}.hero-method{padding-top:32px;padding-bottom:28px}.method-step p{font-size:12px}.hero-bottom p{font-size:12px}}
+@media(max-width:1190px){.sidebar{width:225px;padding-left:13px;padding-right:13px}.main-shell{margin-left:225px;width:calc(100% - 225px)}.navigation-bar{left:225px;padding:0 27px;gap:18px}.topbar{padding:0 27px}.top-actions{gap:11px}main{padding:27px}.hero-copy{padding:30px 0 28px 26px}.hero h1{font-size:45px}.hero-copy>p{font-size:11px}.hero-actions small{display:none}.hero-main{min-height:370px}.hero-visual svg{min-width:270px}.method-step{gap:8px}.method-step p{font-size:9px}.hero-tag{display:none}.matrix{--cell-size:34px;gap:4px}.lab-columns{gap:16px}.breadcrumb{font-size:10px}.button-word{font-size:9px}.params-card strong{font-size:30px}.flow-block{min-width:70px;padding:18px 9px}}
+@media(max-width:950px){.button-word{display:none}.top-actions{gap:16px}.sidebar{width:210px}.main-shell{margin-left:210px;width:calc(100% - 210px)}.navigation-bar{left:210px}.hero-main{grid-template-columns:1fr 1fr}.hero h1{font-size:39px}.hero-copy .eyebrow{font-size:8px;letter-spacing:.9px}.hero-visual svg{min-width:250px;margin-left:-20px}.hero-copy>p{font-size:11px;line-height:1.6}.hero-copy{padding-left:22px}.hero-method{gap:12px}.method-step strong{font-size:11px}.method-step p{font-size:9px}.keyboard-tip{display:none}.lab{padding:21px}.pixel-demo{gap:15px}.pixel-preview{gap:10px}.pixel-preview svg{width:110px}.filter-results{gap:10px}.filter-panel{padding:10px}.filter-panel .matrix{--cell-size:22px}.recap-grid{grid-template-columns:1fr 1fr}.neuron-diagram{gap:8px}.signal-wire{width:22px}.neuron-circle{width:85px;height:85px}.navigation-bar .btn{min-width:100px}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .2s;width:260px}.menu-open .sidebar{transform:translateX(0)}.mobile-scrim:not([hidden]){display:block;position:fixed;inset:0;border:0;border-radius:0;background:#123d3155;z-index:19}.main-shell{margin-left:0;width:100%}.navigation-bar{left:0;height:77px;padding:0 19px;gap:15px}.topbar{height:65px;padding:0 19px;gap:10px}.mobile-menu{display:grid;font-size:17px;border:0}.breadcrumb{margin-right:auto;font-size:10px;gap:8px}.breadcrumb>span:first-child,.crumb-slash{display:none}.top-actions{gap:12px}main{padding:23px 19px 20px}.hero-copy{padding:29px 0 29px 25px}.hero h1{font-size:43px}.hero-visual svg{min-width:250px}.hero-main{min-height:360px}.hero-copy>p{font-size:11px}.hero-method{gap:18px}.hero-bottom{padding-top:18px}.hero-bottom strong{font-size:11px}.hero-bottom p{font-size:10px}.lab-columns{gap:15px}.navigation-bar .btn{min-width:auto;font-size:11px}.slide-position{max-width:200px}.lesson-topline{margin-bottom:14px}.lesson-intro{font-size:13px}h1{font-size:32px}.hero-copy .eyebrow{font-size:8px}.top-actions .text-button{padding:6px}.teacher-notes{font-size:11px}.main-shell{padding-bottom:87px}.presenting .topbar{padding:0 20px}.presenting main{padding:23px 19px}.presenting h1{font-size:32px}.presenting .hero-copy{padding:29px 0 29px 25px}.presenting .hero h1{font-size:43px}.presenting .hero-copy>p{font-size:11px}}
+@media(max-width:520px){.hero-main{display:flex;flex-direction:column}.hero-copy{padding:30px 27px 6px}.hero h1{font-size:48px;max-width:340px;margin:21px 0 18px}.hero h1 br{display:none}.hero-copy>p{font-size:12px;max-width:300px}.hero-visual{height:235px;min-height:235px}.hero-visual svg{width:300px;min-width:0;margin:0}.visual-tag{bottom:8px;font-size:8px}.hero-copy .eyebrow{font-size:8px;letter-spacing:1px}.hero-method{padding-top:21px;gap:10px}.method-step{display:block}.method-step>span{margin-bottom:9px}.method-step strong{font-size:11px}.method-step p{font-size:9px;line-height:1.6}.hero-bottom{align-items:flex-start}.hero-bottom p{max-width:260px}.hero-bottom strong{font-size:11px}.hero-bottom p{font-size:9px}.hero-actions .btn{min-height:38px;padding:9px 15px}.lab{padding:18px 13px;border-radius:12px}.lab-toolbar{gap:10px;margin-bottom:18px}.lab-columns{gap:12px}.matrix{--cell-size:31px;gap:3px}.matrix-label{font-size:9px}.equation{font-size:11px;padding:12px}.neuron-demo{flex-direction:column;align-items:stretch}.input-card{padding:15px}.neuron-diagram{margin-top:15px}.pixel-demo{display:flex;flex-direction:column;gap:20px}.pixel-preview{gap:24px}.pixel-preview svg{width:130px}.pixel-readout{max-width:100%;text-align:center}.params-compare{gap:10px}.params-card{padding:15px 13px}.params-card strong{font-size:25px;margin-top:15px}.params-card>span{font-size:8px}.params-card code{font-size:9px}.filter-results{grid-template-columns:1fr}.filter-panel{display:flex;align-items:center;justify-content:space-around;gap:10px;flex-wrap:wrap}.filter-panel .matrix{--cell-size:24px;margin:7px auto}.filter-panel h3{margin:0}.local-graphic{gap:20px}.local-detail{text-align:center}.lab-caption{font-size:9px}.recap-grid{gap:10px}.recap-card{padding:17px 14px}.recap-card h3{font-size:12px}.recap-card p{font-size:10px}.exercise-row{gap:5px;grid-template-columns:1.6fr 1fr 1fr 1fr;font-size:10px}.exercise-row .layer-description{font-size:8px}.exercise-row input{font-size:11px;padding:8px 3px}.exercise-header{font-size:8px}.quiz-title{font-size:18px}.quiz-summary strong{font-size:60px}.choice{font-size:12px;padding:11px}.rgb-planes{gap:11px}.rgb-plane{padding:14px 10px}.rgb-plane input{width:65px}.rgb-swatch{width:65px;height:65px}.flow-block{padding:14px 8px;min-width:65px}.flow-block strong{font-size:10px}.flow-block small{font-size:8px}.flow-arrow{font-size:11px}.architecture-flow{gap:5px}.takeaway{font-size:11px}.navigation-bar{gap:10px}.nav-prev span:last-child{display:none}.navigation-bar .nav-prev{min-width:32px}.navigation-bar .nav-next{font-size:11px;padding:10px 12px}.top-actions{gap:7px}.topbar{gap:6px}.breadcrumb{font-size:9px}.lesson-intro{font-size:12px}.presenting .hero-copy{padding:30px 27px 6px}.presenting .hero h1{font-size:48px}.presenting .hero-main{min-height:auto}.presenting .hero-copy>p{font-size:12px}.presenting .cell{--cell-size:31px}.presenting .takeaway{font-size:11px}.presenting .lesson-intro{font-size:12px}.finish h2{font-size:29px}dialog{padding:22px}.control{font-size:10px}.control select{font-size:11px}.lab-toolbar .btn{font-size:10px;padding:7px 10px;min-height:34px}.mini-stat,.stat{padding:10px 14px}.mini-stat strong,.stat strong{font-size:21px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.sidebar,.topbar,.navigation-bar,.takeaway,.lab-toolbar,.teacher-notes,.hero-actions{display:none!important}.main-shell{margin:0;width:100%;padding:0}main{padding:0}.lab{box-shadow:none;break-inside:avoid}.hero-main{border:0}.hero-copy{padding:20px}.hero-method{padding:20px}body{background:white}.btn{display:none!important}}
+
+/* More room for dimensions on small screens. */
+.stat strong{font-size:clamp(17px,2.2vw,27px);overflow-wrap:anywhere}.stat{margin-top:18px}.lab-convolution>.lab-toolbar:not(:first-child),.lab>.lab-toolbar:not(:first-child){margin-top:20px;margin-bottom:0}.neuron-demo .range-row{flex-wrap:wrap}.neuron-demo .range-row label{font-size:11px;min-width:140px}.pixel-preview{flex-wrap:wrap}.cell:disabled{opacity:1}.choice:disabled{opacity:1;cursor:default}.filter-panel{min-width:0}.filter-panel .matrix{max-width:100%}
+
+@media(max-width:760px){.sidebar{visibility:hidden}.menu-open .sidebar{visibility:visible}}
+
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#lesson">Aller au cours</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Plan du cours">
+      <a class="brand" href="#/voir-comprendre" aria-label="CNN Explorer, accueil"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>CNN<span class="brand-light"> Explorer</span><small>LE LABORATOIRE VISUEL</small></span></a>
+      <div class="course-label">DEEP LEARNING <span>CH. 03</span></div>
+      <nav id="course-nav" aria-label="Diapositives"></nav>
+      <div class="sidebar-bottom"><div class="teacher-avatar">MD</div><div><strong>Moussa Diallo</strong><span>Dakar Institute of Technology</span></div></div>
+    </aside>
+    <button class="mobile-scrim" id="scrim" aria-label="Fermer le plan" hidden></button>
+    <div class="main-shell">
+      <header class="topbar">
+        <button id="menu-button" class="icon-button mobile-menu" aria-label="Ouvrir le plan" aria-expanded="false">☰</button>
+        <div class="breadcrumb"><span>Le laboratoire</span><span class="crumb-slash">/</span><strong>Comprendre les CNN</strong></div>
+        <div class="top-actions"><button class="text-button" id="glossary-button" aria-label="Lexique"><span aria-hidden="true">Aa</span> <span class="button-word">Lexique</span></button><button class="text-button" id="notes-button" aria-label="Notes enseignant" aria-pressed="false"><span aria-hidden="true">▤</span> <span class="button-word">Notes enseignant</span></button><button class="icon-button" id="present-button" title="Mode présentation (F)" aria-label="Activer le mode présentation" aria-pressed="false">⛶</button></div>
+      </header>
+      <main id="lesson" tabindex="-1" aria-label="Diapositive du cours"></main>
+      <footer class="navigation-bar">
+        <button class="btn nav-prev" id="previous"><span aria-hidden="true">←</span> <span>Précédent</span></button>
+        <div class="slide-position"><div><span id="slide-count">01 / 27</span><span class="keyboard-tip">Utilisez les flèches <kbd>←</kbd> <kbd>→</kbd></span></div><div class="progress-track" role="progressbar" aria-label="Position dans le cours" aria-valuemin="1" aria-valuemax="27" aria-valuenow="1"><span id="progress-fill"></span></div></div>
+        <button class="btn primary nav-next" id="next">Suivant <span aria-hidden="true">→</span></button>
+      </footer>
+    </div>
+  </div>
+  <dialog id="glossary-dialog" aria-labelledby="glossary-title"><div class="dialog-header"><span class="eyebrow">UN MOT, UNE IDÉE</span><button class="icon-button" data-close aria-label="Fermer le lexique">✕</button></div><h2 id="glossary-title">Le petit lexique des CNN</h2><div id="glossary-content"></div><p class="muted">Le cours et les démonstrations fonctionnent dans votre navigateur. Aucune donnée n’est envoyée.</p></dialog>
+  <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
+  <noscript>Activez JavaScript pour parcourir le cours et manipuler les expériences.</noscript>
+  <script>
+const { slides } = (() => {
+// Parcours pédagogique adapté du chapitre CNN de Moussa Diallo (DIT).
+// Les démonstrations complètent le support ; elles ne reproduisent pas son texte.
+const slides = [
+  {
+    id: 'voir-comprendre', section: '01 Les bases', kicker: 'CHAPITRE 03 · RÉSEAUX CONVOLUTIFS',
+    title: 'Comment un ordinateur apprend-il à voir ?',
+    intro: 'Une image, des petits motifs, puis une décision. Nous allons construire cette idée ensemble, une manipulation à la fois.',
+    demo: 'hero', takeaway: 'Un CNN apprend des filtres qui repèrent des motifs utiles dans les images.',
+    prompt: 'Quand vous reconnaissez un chat, quels détails regardez-vous en premier ?',
+    notes: 'Commencer par les réponses des étudiants : oreilles, yeux, moustaches. Annoncer le contrat : observer, essayer, expliquer avec ses mots, puis seulement écrire une formule.',
+    source: 'Diapositives 1, 4 et 5 du support', duration: 2
+  },
+  {
+    id: 'un-neurone', section: '01 Les bases', kicker: 'REPARTIR D’UNE IDÉE SIMPLE',
+    title: 'Un neurone fait une somme pondérée',
+    intro: 'Chaque entrée apporte une information. Le poids règle son importance ; le biais décale le résultat. Une activation transforme ensuite cette somme.',
+    demo: 'neuron', takeaway: 'Entrées × poids, puis somme + biais, puis activation : cette recette reste présente dans les CNN.',
+    prompt: 'Si un poids devient négatif, quel effet son entrée a-t-elle sur la somme ?',
+    notes: 'Faire modifier un seul poids, prédire le résultat, puis observer. Distinguer la somme z de la sortie après activation. Les poids affichés dans une manipulation sont choisis ; en apprentissage, ils sont ajustés à partir des exemples.',
+    source: 'Passerelle avec le chapitre 1 : perceptron', duration: 4
+  },
+  {
+    id: 'du-neurone-au-mlp', section: '01 Les bases', kicker: 'LE LIEN AVEC LE CHAPITRE 2',
+    title: 'Un MLP combine plusieurs neurones',
+    intro: 'Dans une couche dense, chaque neurone reçoit toutes les sorties de la couche précédente. Plusieurs couches permettent de combiner les informations.',
+    demo: 'mlp', takeaway: 'Le CNN conserve les neurones et l’apprentissage ; il organise autrement les connexions pour traiter les images.',
+    prompt: 'Dans une couche dense, un neurone regarde-t-il une petite zone ou toutes les entrées ?',
+    notes: 'Suivre un seul chemin de gauche à droite avant de commenter le réseau entier. Rappeler que les activations entre les couches permettent au MLP de représenter des relations non linéaires.',
+    source: 'Passerelle avec le chapitre 2 : MLP', duration: 3
+  },
+  {
+    id: 'image-nombres', section: '01 Les bases', kicker: 'AVANT LE RÉSEAU',
+    title: 'Pour la machine, une image est un tableau',
+    intro: 'Une image en niveaux de gris contient une valeur par pixel. Des pixels voisins dessinent ensemble une ligne, un coin ou une forme.',
+    demo: 'pixels', takeaway: 'La position des nombres et leurs voisinages portent une partie essentielle de l’information visuelle.',
+    prompt: 'Si l’on mélange les positions des pixels, la liste des valeurs suffit-elle à reconnaître le dessin ?',
+    notes: 'Faire dessiner une forme simple dans la grille. Relier un pixel allumé à sa valeur. Ne pas généraliser la convention clair/sombre : elle dépend du codage choisi, indiqué dans la démonstration.',
+    source: 'Préparation aux diapositives 2 à 6 du support', duration: 4
+  },
+  {
+    id: 'limites-dense', section: '01 Les bases', kicker: 'POURQUOI CHANGER D’OUTIL ?',
+    title: 'Tout relier devient vite coûteux',
+    intro: 'Aplatir une grande image donne une très longue liste. La relier à une couche dense demande beaucoup de poids et ne privilégie pas les pixels voisins.',
+    demo: 'params', takeaway: 'Les CNN exploitent les voisinages et réutilisent les mêmes poids à plusieurs positions.',
+    prompt: 'Si la largeur et la hauteur doublent, combien de fois plus de pixels obtenons-nous ?',
+    notes: 'Faire compter les connexions sur une petite image avant de montrer une grande résolution. Le surapprentissage n’est pas automatique : il dépend aussi des données, de la capacité du modèle et de la régularisation.',
+    source: 'Diapositives 2 et 3 du support', duration: 3
+  },
+  {
+    id: 'regarder-localement', section: '02 La convolution', kicker: 'L’INTUITION DU CNN',
+    title: 'Observer une petite zone, puis se déplacer',
+    intro: 'Une petite fenêtre inspecte une région de l’image. Le même détecteur parcourt ensuite les autres régions pour chercher le même type de motif.',
+    demo: 'local', takeaway: 'Connexions locales et partage des poids sont les deux idées centrales de la convolution.',
+    prompt: 'Pour trouver une ligne à droite, faut-il apprendre un nouveau détecteur si on sait déjà la trouver à gauche ?',
+    notes: 'Mimer une loupe que l’on déplace. Une convolution est équivariante aux translations dans des conditions adaptées : le motif déplacé déplace sa réponse. Cela ne garantit pas une classification invariante à toute translation.',
+    source: 'Diapositives 5 et 6 du support', duration: 3
+  },
+  {
+    id: 'un-filtre', section: '02 La convolution', kicker: 'OBSERVER AVANT DE CALCULER',
+    title: 'Un filtre réagit à certains motifs',
+    intro: 'Un filtre est un petit tableau de poids. Selon ces poids, sa réponse peut souligner une séparation entre zones claires et sombres, par exemple un bord.',
+    demo: 'filters', takeaway: 'La carte obtenue indique où le filtre répond et avec quelle intensité.',
+    prompt: 'Quel filtre répond le plus fortement au motif que vous venez de dessiner ?',
+    notes: 'Comparer deux filtres sur la même entrée. Préciser que les filtres de bord proposés sont des exemples construits pour comprendre ; dans un CNN entraîné, les valeurs des filtres sont apprises.',
+    source: 'Diapositives 6 et 9 du support', duration: 4
+  },
+  {
+    id: 'calcul-convolution', section: '02 La convolution', kicker: 'LA RECETTE, CASE PAR CASE',
+    title: 'Multiplier, additionner, avancer',
+    intro: 'À une position donnée, on multiplie chaque pixel par le poids placé en face. On additionne les produits, puis le biais éventuel : on obtient une case de la carte de sortie.',
+    demo: 'convolution', takeaway: 'Une case de sortie résume le calcul d’un filtre sur une zone précise de l’entrée.',
+    prompt: 'Quels pixels ont participé au calcul de la case de sortie sélectionnée ?',
+    notes: 'Faire une position à la main avant de lancer le déplacement. Dans les bibliothèques de deep learning, l’opération appelée convolution utilise habituellement le noyau sans le retourner : techniquement, une corrélation croisée.',
+    source: 'Diapositives 6 à 8 du support', duration: 6
+  },
+  {
+    id: 'calculer-soi-meme', section: '02 La convolution', kicker: 'PAUSE · À VOUS DE PRÉDIRE',
+    title: 'Une seule case, un calcul complet',
+    intro: 'Prenez un instant pour multiplier les nombres en face à face. Faites ensuite la somme, avec un biais égal à zéro.',
+    demo: 'dotquiz', takeaway: 'Un poids nul ignore une valeur ; un poids négatif soustrait sa contribution.',
+    question: {
+      text: 'Patch : [1, 2 ; 3, 4]. Filtre : [1, 0 ; 0, −1]. Biais : 0. Quelle est la sortie ?',
+      options: ['−3', '3', '5', '10'], answer: 0,
+      explanation: '1 × 1 + 2 × 0 + 3 × 0 + 4 × (−1) = 1 − 4 = −3. Une convolution peut produire des valeurs négatives.'
+    },
+    prompt: 'Quelle multiplication explique le signe négatif de la réponse ?',
+    notes: 'Laisser trente secondes de réflexion individuelle avant le vote. Si beaucoup choisissent 3, reprendre le signe de 4 × (−1). Ne pas appliquer ReLU à cette étape : on calcule d’abord la sortie de convolution.',
+    source: 'Mise en pratique des diapositives 7 et 8', duration: 3
+  },
+  {
+    id: 'plusieurs-filtres', section: '02 La convolution', kicker: 'UNE IMAGE, PLUSIEURS REGARDS',
+    title: 'Chaque filtre produit sa propre carte',
+    intro: 'Un filtre peut répondre à un type de bord, un autre à un motif différent. Les cartes s’empilent : leur nombre correspond au nombre de filtres.',
+    demo: 'filterbank', takeaway: 'Avec K filtres, la sortie possède K canaux, quelle que soit la profondeur de l’entrée.',
+    prompt: 'Si une couche applique 12 filtres à une image couleur, combien de cartes produit-elle ?',
+    notes: 'Réponse attendue : 12, pas 36. Un filtre d’une convolution standard couvre tous les canaux de l’entrée et additionne leurs contributions pour produire une seule carte.',
+    source: 'Diapositive 9 du support', duration: 3
+  },
+  {
+    id: 'stride', section: '02 La convolution', kicker: 'RÉGLER LE DÉPLACEMENT',
+    title: 'Le stride est la longueur du pas',
+    intro: 'Avec un stride de 1, le filtre avance d’une case. Avec un stride de 2, ses positions de départ sont espacées de deux cases : il calcule moins de sorties.',
+    demo: 'stride', takeaway: 'Augmenter le stride réduit généralement la largeur et la hauteur de la sortie.',
+    prompt: 'Avant de changer le stride, prévoyez : la carte sera-t-elle plus grande ou plus petite ?',
+    notes: 'Comparer les positions de départ avec la même image et le même filtre. Le filtre ne change pas de taille. Un stride de 2 n’implique pas toujours une sortie exactement deux fois plus petite : les dimensions et le padding interviennent.',
+    source: 'Diapositive 10 du support', duration: 3
+  },
+  {
+    id: 'padding', section: '02 La convolution', kicker: 'QUE FAIRE AUX BORDS ?',
+    title: 'Le padding ajoute une bordure',
+    intro: 'Sans bordure, le filtre doit rester entièrement dans l’image. Ajouter des zéros autour permet d’inclure plus de positions, notamment près des bords.',
+    demo: 'padding', takeaway: 'Un filtre 3 × 3, un stride de 1 et un padding de 1 conservent la taille spatiale.',
+    prompt: 'Une bordure de zéros ajoute-t-elle de nouvelles informations provenant de la scène photographiée ?',
+    notes: 'Montrer que les zéros sont ajoutés par nous. Pour un noyau impair F et un stride de 1, P = (F − 1) / 2 conserve la taille. Ne pas appliquer cette règle sans ses conditions.',
+    source: 'Diapositive 11 du support', duration: 3
+  },
+  {
+    id: 'dimensions', section: '02 La convolution', kicker: 'LA FORMULE VIENT APRÈS L’INTUITION',
+    title: 'Compter les positions possibles du filtre',
+    intro: 'La taille de sortie dépend de la taille d’entrée N, du filtre F, du padding P et du stride S. La même règle s’applique séparément à la hauteur et à la largeur.',
+    demo: 'shapes', takeaway: 'Taille de sortie = ⌊(N − F + 2P) / S⌋ + 1. Le nombre de filtres fixe le nombre de canaux de sortie.',
+    prompt: 'Avec N = 5, F = 3, P = 0 et S = 1, combien de positions existe-t-il sur une ligne ?',
+    notes: 'Faire placer le filtre mentalement aux positions 0, 1 et 2 : trois positions. Les crochets de partie entière signifient arrondir vers le bas. Cette formule suppose une convolution standard sans dilatation.',
+    source: 'Diapositives 9 à 11 du support', duration: 5
+  },
+  {
+    id: 'couleur-canaux', section: '02 La convolution', kicker: 'PASSER DU GRIS À LA COULEUR',
+    title: 'Une image RGB a trois canaux',
+    intro: 'Rouge, vert et bleu sont trois tableaux superposés. Un filtre standard possède une tranche de poids par canal ; leurs contributions sont additionnées.',
+    demo: 'rgb', takeaway: 'Un filtre 3 × 3 appliqué à une entrée RGB contient 3 × 3 × 3 poids, plus un biais éventuel.',
+    prompt: 'Un seul filtre sur trois canaux d’entrée produit-il une ou trois cartes de sortie ?',
+    notes: 'Réponse : une carte. Pour 12 filtres, chacun possède ses 27 poids et produit sa carte. Introduire la profondeur comme nombre de canaux, sans la confondre avec le nombre de couches du réseau.',
+    source: 'Diapositive 9 du support', duration: 3
+  },
+  {
+    id: 'relu', section: '03 Construire un CNN', kicker: 'TRANSFORMER LES RÉPONSES',
+    title: 'ReLU remplace le négatif par zéro',
+    intro: 'Après la convolution, une activation est appliquée à chaque valeur. ReLU garde les valeurs positives et remplace les valeurs négatives par zéro.',
+    demo: 'relu', takeaway: 'ReLU(x) = max(0, x). Elle change les valeurs, sans changer la forme du tableau.',
+    prompt: 'Après ReLU, que deviennent −4, 0 et 3 ?',
+    notes: 'Faire prédire chaque résultat avant de révéler la carte transformée. Une valeur négative n’est pas une erreur de calcul ; ReLU est une transformation choisie. Elle introduit une non-linéarité.',
+    source: 'Diapositives 6, 13 et 14 du support', duration: 3
+  },
+  {
+    id: 'max-pooling', section: '03 Construire un CNN', kicker: 'RÉSUMER UNE PETITE RÉGION',
+    title: 'Max pooling : garder la plus grande valeur',
+    intro: 'On parcourt une carte avec une fenêtre, souvent 2 × 2 avec un stride de 2. Dans chaque fenêtre, on ne conserve que le maximum.',
+    demo: 'pooling', takeaway: 'Le pooling réduit les dimensions spatiales et traite chaque canal séparément.',
+    prompt: 'Dans le bloc [1, 5 ; 2, 3], quelle valeur restera après max pooling ?',
+    notes: 'Faire repérer le maximum avant de montrer la sortie. Le pooling ne contient pas de poids appris. Il peut réduire la sensibilité à de petits déplacements, sans garantir une invariance à tout déplacement.',
+    source: 'Diapositives 12 et 13 du support', duration: 4
+  },
+  {
+    id: 'average-pooling', section: '03 Construire un CNN', kicker: 'DEUX FAÇONS DE RÉSUMER',
+    title: 'Maximum ou moyenne : le résultat change',
+    intro: 'Le max pooling garde la réponse la plus forte. L’average pooling calcule la moyenne de toutes les valeurs de la fenêtre.',
+    demo: 'average', takeaway: 'Le maximum souligne une forte réponse locale ; la moyenne résume le niveau global de la région.',
+    prompt: 'Pour [1, 5 ; 2, 4], quelles sorties donnent le maximum et la moyenne ?',
+    notes: 'Résultats attendus : maximum 5, moyenne 3. Les deux opérations perdent de l’information. Ne pas présenter le pooling comme une garantie contre le surapprentissage ; la réduction du volume peut aider selon l’architecture.',
+    source: 'Diapositive 12 du support', duration: 3
+  },
+  {
+    id: 'chaine-cnn', section: '03 Construire un CNN', kicker: 'ASSEMBLER LES BRIQUES',
+    title: 'Du pixel à une représentation utile',
+    intro: 'La convolution cherche des motifs, ReLU transforme les réponses et le pooling résume les régions. En répétant ces étapes, les couches combinent des motifs de plus en plus complexes.',
+    demo: 'architecture', takeaway: 'Chaque couche transforme un volume : sa hauteur, sa largeur et son nombre de canaux peuvent évoluer.',
+    prompt: 'Quelle étape apprend des poids ? Quelle étape réduit la taille ? Laquelle remet le négatif à zéro ?',
+    notes: 'Parcourir la chaîne une brique à la fois. Éviter de promettre qu’un filtre correspond toujours à un objet compréhensible : les représentations apprises ne sont pas toutes faciles à nommer. Toutes les architectures ne possèdent pas obligatoirement ces mêmes blocs.',
+    source: 'Diapositives 14 et 16 du support', duration: 4
+  },
+  {
+    id: 'flatten', section: '03 Construire un CNN', kicker: 'CHANGER LA FORME',
+    title: 'Flatten déroule les valeurs en une liste',
+    intro: 'Avant une couche dense, on peut réorganiser un volume en un vecteur. Les valeurs sont conservées : seule leur organisation change.',
+    demo: 'flatten', takeaway: 'Un volume H × W × C devient une liste de H × W × C valeurs. Flatten n’apprend aucun poids.',
+    prompt: 'Un volume 2 × 2 × 3 donnera-t-il 4, 7 ou 12 valeurs après flatten ?',
+    notes: 'Réponse : 12. Corriger explicitement l’idée du support selon laquelle flatten réduirait l’espace et augmenterait la profondeur : il réorganise les éléments sans en réduire le nombre. Un pooling global est une autre option, qui n’est pas un flatten.',
+    source: 'Diapositives 14, 15 et 18 du support · précision sur flatten', duration: 3
+  },
+  {
+    id: 'classification', section: '03 Construire un CNN', kicker: 'PRENDRE UNE DÉCISION',
+    title: 'Les caractéristiques servent à classer',
+    intro: 'Les couches finales combinent les caractéristiques pour produire un score par classe. Softmax transforme ces scores en nombres positifs dont la somme vaut 1.',
+    demo: 'classifier', takeaway: 'La classe au score le plus élevé est la prédiction ; la valeur affichée ne garantit pas que la réponse est juste.',
+    prompt: 'Un modèle qui affiche une forte probabilité peut-il tout de même se tromper ?',
+    notes: 'Oui : les sorties softmax ne sont pas automatiquement des probabilités bien calibrées. La démonstration illustre le passage des scores aux sorties ; elle ne doit pas être présentée comme un modèle préentraîné reconnaissant de vraies photos.',
+    source: 'Diapositive 15 du support', duration: 3
+  },
+  {
+    id: 'apprendre-filtres', section: '03 Construire un CNN', kicker: 'D’OÙ VIENNENT LES POIDS ?',
+    title: 'Apprendre, c’est ajuster les poids',
+    intro: 'Le réseau prédit, compare sa réponse à l’étiquette correcte, puis ajuste ses poids pour diminuer l’erreur. La rétropropagation calcule comment chaque poids contribue à cette erreur.',
+    demo: 'learning', takeaway: 'Les filtres d’un CNN sont appris à partir d’exemples ; ils ne sont pas tous dessinés à la main.',
+    prompt: 'Que doit-on garder à part pour vérifier si le réseau réussit sur de nouvelles images ?',
+    notes: 'Réponse : des données de validation ou de test, distinctes des données d’entraînement. Relier la boucle prédiction → perte → gradients → mise à jour au MLP déjà étudié. Un faible coût d’entraînement ne suffit pas à prouver la généralisation.',
+    source: 'Lien avec l’apprentissage des chapitres 1 et 2 ; filtres apprenables de la diapositive 9', duration: 4
+  },
+  {
+    id: 'lenet', section: '03 Construire un CNN', kicker: 'UN EXEMPLE HISTORIQUE',
+    title: 'LeNet-5 relie ces idées',
+    intro: 'LeNet-5 a été conçu pour reconnaître des caractères, notamment des chiffres manuscrits. Son architecture alterne convolutions et sous-échantillonnage avant la décision finale.',
+    demo: 'lenet', takeaway: 'Lire une architecture consiste à suivre les transformations des dimensions et le rôle de chaque couche.',
+    prompt: 'Pourquoi les cartes deviennent-elles plus petites alors que leur nombre peut augmenter ?',
+    notes: 'Présenter les dimensions classiques : entrée 32 × 32 × 1, C1 28 × 28 × 6, S2 14 × 14 × 6, C3 10 × 10 × 16, S4 5 × 5 × 16, C5 1 × 1 × 120, F6 84, sortie 10 classes. LeNet-5 original utilise des activations de type tanh et un sous-échantillonnage avec paramètres ; ne pas lui attribuer ReLU et max pooling comme description historique exacte. Les connexions C3 et la sortie historiques comportent aussi des particularités omises dans un schéma simplifié.',
+    source: 'Diapositive 17 du support', duration: 4
+  },
+  {
+    id: 'exercice-support', section: '04 À vous de jouer', kicker: 'L’EXERCICE DE VOTRE SUPPORT',
+    title: 'Suivre une image de 256 × 256 × 3',
+    intro: 'Calculez la forme après chaque couche. Gardez séparées les deux questions : quelle est la taille spatiale et combien de canaux restent-ils ?',
+    demo: 'exercise', takeaway: 'Une convolution fixe les canaux par son nombre de filtres ; le pooling conserve ce nombre de canaux.',
+    prompt: 'Après le deuxième pooling, peut-on retrouver 3 canaux simplement parce que l’image de départ était RGB ?',
+    notes: 'Non. Correction : conv 16 filtres 3 × 3, S1, P1 → 256 × 256 × 16 ; pool 2 × 2, S2 → 128 × 128 × 16 ; conv 8 filtres 7 × 7, S1, P3 → 128 × 128 × 8 ; pool 2 × 2, S2 → 64 × 64 × 8. Faire justifier chaque dimension avant de révéler l’étape suivante.',
+    source: 'Diapositive 19 du support', duration: 7
+  },
+  {
+    id: 'quiz', section: '04 À vous de jouer', kicker: 'VÉRIFIER SA COMPRÉHENSION',
+    title: 'Expliquer vaut mieux que mémoriser',
+    intro: 'Répondez sans regarder les diapositives précédentes. Après chaque réponse, lisez l’explication et reformulez la règle avec vos propres mots.',
+    demo: 'quiz', takeaway: 'Une erreur permet de repérer l’idée à retravailler : calcul, dimensions ou rôle des couches.',
+    prompt: 'Quelle réponse avez-vous choisie, et surtout : pourquoi ?',
+    notes: 'Utiliser les réponses comme diagnostic, sans noter la vitesse. Revenir au simulateur associé quand une confusion persiste. Faire expliquer une réponse correcte par un étudiant avant de montrer le corrigé.',
+    source: 'Synthèse des diapositives 6 à 18 du support', duration: 6
+  },
+  {
+    id: 'essentiel', section: '04 À vous de jouer', kicker: 'LA CARTE À GARDER EN TÊTE',
+    title: 'Six briques, six rôles distincts',
+    intro: 'Convolution, activation, pooling, flatten, couche dense et apprentissage n’ont pas le même rôle. Les distinguer permet de lire un CNN sans se perdre dans le vocabulaire.',
+    demo: 'recap', takeaway: 'Convolution : extraire. ReLU : transformer. Pooling : résumer. Flatten : réorganiser. Dense : combiner. Apprentissage : ajuster.',
+    prompt: 'Quelle brique choisiriez-vous pour diminuer la hauteur et la largeur sans apprendre de poids ?',
+    notes: 'Réponse attendue : un pooling. Demander ensuite quelle brique ne fait que réorganiser les valeurs : flatten. Les CNN exploitent bien la structure des images, mais leur supériorité sur un MLP dépend de la tâche et des conditions.',
+    source: 'Diapositive 18 du support · synthèse corrigée et enrichie', duration: 3
+  },
+  {
+    id: 'defi-binome', section: '04 À vous de jouer', kicker: 'TRANSFÉRER À UN NOUVEAU CAS',
+    title: 'À deux : concevoir et justifier un petit CNN',
+    intro: 'Partez d’un chiffre en niveaux de gris de 28 × 28 × 1. Suivez une convolution de 8 filtres 3 × 3, stride 1, padding 1, puis ReLU, max pooling 2 × 2 et flatten.',
+    demo: 'challenge', takeaway: 'Pouvoir prédire les formes et expliquer les choix montre que l’on comprend la chaîne.',
+    prompt: 'Combien de valeurs entrent dans la couche dense après flatten ? Expliquez chaque étape.',
+    notes: 'Faire travailler en binômes : une personne calcule, l’autre vérifie et explique. Correction : convolution 28 × 28 × 8 ; ReLU même forme ; pooling stride 2 → 14 × 14 × 8 ; flatten → 1 568 valeurs. Bonus : convolution = (3 × 3 × 1 + 1) × 8 = 80 paramètres avec biais. La couche dense finale produit 10 scores.',
+    source: 'Activité de transfert inspirée de l’exercice final du support', duration: 6
+  },
+  {
+    id: 'fin', section: '04 À vous de jouer', kicker: 'DU COURS À LA PRATIQUE',
+    title: 'Vous pouvez maintenant lire un CNN',
+    intro: 'Vous avez relié les neurones aux images, calculé une convolution et suivi les dimensions d’un réseau. L’étape suivante : entraîner un petit modèle et examiner aussi ses erreurs.',
+    demo: 'finish', takeaway: 'Pour chaque couche : quelle information entre, quelle opération est faite, et quelle forme sort ?',
+    prompt: 'Quelle idée vous paraît encore floue ? Montrez-la avec un exemple précis.',
+    notes: 'Terminer par un billet de sortie : chaque étudiant écrit une chose comprise et une question restante. Pour le TP, commencer par visualiser les images, séparer entraînement et test, puis comparer les prédictions correctes et incorrectes.',
+    source: 'Conclusion pédagogique et préparation au TP', duration: 2
+  }
+];
+
+return { slides };
+})();
+const { mountLab } = (() => {
+/* Interactive numerical laboratories. All calculations run locally. */
+const fmt = (n, digits = 2) => Number.isInteger(n) ? String(n) : Number(n.toFixed(digits)).toLocaleString('fr-FR');
+const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const matrix = (values, cols, label, cellClass = () => '', attrs = () => '', text = v => fmt(v)) => `<div class="matrix-group"><div class="matrix-label">${label}</div><div class="matrix" role="group" aria-label="${esc(label)}" style="--cols:${cols}">${values.map((v, i) => `<button type="button" class="cell ${cellClass(v, i)}" ${attrs(v, i)} aria-label="Ligne ${Math.floor(i / cols) + 1}, colonne ${i % cols + 1} : ${esc(text(v, i))}">${text(v, i)}</button>`).join('')}</div></div>`;
+const button = (action, label, primary = false) => `<button type="button" class="btn${primary ? ' primary' : ''}" data-action="${action}">${label}</button>`;
+
+function convolutionLab(type, el) {
+  const input = Array.from({length:25}, (_, i) => [0,0,1,1,0][i % 5]);
+  const filters = {
+    vertical: {label:'Bords verticaux', values:[-1,0,1,-1,0,1,-1,0,1]},
+    horizontal: {label:'Bords horizontaux', values:[-1,-1,-1,0,0,0,1,1,1]},
+    average: {label:'Moyenne (flou)', values:Array(9).fill(1 / 9)}
+  };
+  let stride = type === 'stride' ? 2 : 1;
+  let padding = type === 'padding' ? 1 : 0;
+  let filter = 'vertical', position = 0, visited = new Set([0]), timer = null;
+  const size = () => Math.floor((5 - 3 + 2 * padding) / stride) + 1;
+  const sample = (r, c) => r >= 0 && r < 5 && c >= 0 && c < 5 ? input[r * 5 + c] : 0;
+  const patchAt = index => {
+    const n = size(), row = Math.floor(index / n) * stride - padding, col = index % n * stride - padding;
+    return Array.from({length:9}, (_, i) => sample(row + Math.floor(i / 3), col + i % 3));
+  };
+  const valueAt = index => patchAt(index).reduce((sum, value, i) => sum + value * filters[filter].values[i], 0);
+  const stop = () => { if (timer) clearInterval(timer); timer = null; };
+  function render() {
+    const n = size(), width = 5 + 2 * padding, startR = Math.floor(position / n) * stride, startC = position % n * stride;
+    const padded = Array.from({length:width * width}, (_, i) => sample(Math.floor(i / width) - padding, i % width - padding));
+    const patch = patchAt(position), weights = filters[filter].values, terms = patch.map((v,i) => `${fmt(v)} × (${fmt(weights[i])})`);
+    el.innerHTML = `<div class="lab lab-convolution">
+      <div class="lab-toolbar">
+        <label class="control">Filtre <select data-control="filter" aria-label="Choisir le filtre">${Object.entries(filters).map(([key,v]) => `<option value="${key}" ${key === filter ? 'selected' : ''}>${v.label}</option>`).join('')}</select></label>
+        <label class="control">Pas S <select data-control="stride" aria-label="Pas du filtre"><option ${stride === 1 ? 'selected' : ''}>1</option><option ${stride === 2 ? 'selected' : ''}>2</option></select></label>
+        <label class="control">Padding P <select data-control="padding" aria-label="Bordure de zéros"><option ${padding === 0 ? 'selected' : ''}>0</option><option ${padding === 1 ? 'selected' : ''}>1</option></select></label>
+        <span class="pill">Position ${position + 1} / ${n * n}</span>
+      </div>
+      <div class="lab-columns">
+        ${matrix(padded, width, `Entrée ${width} × ${width}${padding ? ' · zéros ajoutés' : ''}`, (_,i) => {const r=Math.floor(i/width),c=i%width;return `${r>=startR&&r<startR+3&&c>=startC&&c<startC+3?'selected':''} ${padding&&(r===0||c===0||r===width-1||c===width-1)?'zero-pad':''}`;})}
+        ${matrix(weights,3,'Filtre 3 × 3 · partagé',v => v < 0 ? 'negative' : v > 0 ? 'positive' : '')}
+        ${matrix(Array.from({length:n*n},(_,i)=>valueAt(i)), n, `Carte ${n} × ${n}`, (_,i) => i === position ? 'active' : visited.has(i) ? 'positive' : '', (_,i) => `data-output="${i}"`, (v,i) => visited.has(i) ? fmt(v) : '·')}
+      </div>
+      <div class="equation" aria-live="polite">${terms.join(' + ')} + 0 (biais) <strong>= ${fmt(valueAt(position))}</strong></div>
+      <div class="lab-toolbar">${button('previous','← Position')}${button('next','Position suivante →',true)}${button('play',timer?'Pause':'▶ Animer')}${button('reset','Recommencer')}${button('all','Tout révéler')}</div>
+      <p class="lab-note">${type === 'stride' ? `Le filtre avance de ${stride} pixel${stride>1?'s':''}. Un pas plus grand donne moins de positions.` : type === 'padding' ? `P = ${padding} : ${padding ? 'une bordure de zéros protège la taille spatiale pour S = 1 et F = 3.' : 'aucun zéro ajouté : le filtre doit rester dans l’image.'}` : 'La fenêtre encadrée est multipliée case par case par le même filtre. On additionne les neuf produits et le biais.'} Cliquez sur une case de sortie pour examiner son calcul.</p>
+      <p class="hint">Sortie : ⌊(5 − 3 + 2 × ${padding}) / ${stride}⌋ + 1 = ${n}. Les filtres ci-dessus sont choisis à la main pour comprendre ; un CNN apprend leurs poids.</p>
+    </div>`;
+  }
+  const click = event => {
+    const output = event.target.closest('[data-output]');
+    if (output) {stop();position=Number(output.dataset.output);visited.add(position);render();return;}
+    const action = event.target.closest('[data-action]')?.dataset.action;
+    if (!action) return;
+    if (action === 'next' || action === 'previous') {stop();position=(position+(action==='next'?1:-1)+size()**2)%(size()**2);visited.add(position);}
+    if (action === 'reset') {stop();position=0;visited=new Set([0]);}
+    if (action === 'all') {stop();visited=new Set(Array.from({length:size()**2},(_,i)=>i));}
+    if (action === 'play') {
+      if (timer) stop();
+      else timer=setInterval(()=>{position=(position+1)%(size()**2);visited.add(position);if(position===size()**2-1)stop();render();},750);
+    }
+    render();
+  };
+  const change = event => {const key=event.target.dataset.control;if(!key)return;stop();if(key==='filter')filter=event.target.value;if(key==='stride')stride=Number(event.target.value);if(key==='padding')padding=Number(event.target.value);position=0;visited=new Set([0]);render();};
+  el.addEventListener('click',click);el.addEventListener('change',change);render();
+  return ()=>{stop();el.removeEventListener('click',click);el.removeEventListener('change',change);};
+}
+
+function shapeLab(el) {
+  const values={N:32,F:3,S:1,P:1,C:3,K:12};
+  const select=(key,options,label)=>`<label class="control">${label}<select data-shape="${key}">${options.map(n=>`<option value="${n}" ${n===values[key]?'selected':''}>${n}</option>`).join('')}</select></label>`;
+  el.innerHTML=`<div class="lab"><div class="lab-toolbar">
+    <label class="control">Largeur / hauteur N<input aria-label="Taille de l’entrée" data-shape="N" type="number" min="5" max="256" step="1" value="32"></label>
+    ${select('F',[1,3,5,7],'Taille du filtre F')}${select('S',[1,2,3],'Pas S')}${select('P',[0,1,2,3],'Padding P')}${select('C',[1,3],'Canaux d’entrée C')}
+    <label class="control">Nombre de filtres K<input aria-label="Nombre de filtres" data-shape="K" type="number" min="1" max="32" value="12"></label>
+    </div><div data-shape-result aria-live="polite"></div><p class="lab-note">Hypothèse : image carrée, filtres carrés, convolution standard avec un biais par filtre. ⌊x⌋ signifie « prendre l’entier inférieur ».</p></div>`;
+  function update(){
+    const result=el.querySelector('[data-shape-result]');
+    const valid=Number.isInteger(values.N)&&values.N>=5&&values.N<=256&&Number.isInteger(values.K)&&values.K>=1&&values.K<=32;
+    const raw=(values.N-values.F+2*values.P)/values.S, output=Math.floor(raw)+1;
+    if(!valid || output<1){result.innerHTML='<p class="feedback">Choisissez N entre 5 et 256, K entre 1 et 32 et un filtre qui tient dans l’entrée complétée.</p>';return;}
+    const params=(values.F**2*values.C+1)*values.K;
+    result.innerHTML=`<div class="equation">⌊(${values.N} − ${values.F} + 2 × ${values.P}) / ${values.S}⌋ + 1<br><strong>⌊${fmt(raw,4)}⌋ + 1 = ${output}</strong></div><div class="lab-columns"><div class="stat"><small>Entrée</small><strong>${values.N} × ${values.N} × ${values.C}</strong></div><div class="stat"><small>Sortie</small><strong>${output} × ${output} × ${values.K}</strong></div><div class="stat"><small>Paramètres appris</small><strong>${params.toLocaleString('fr-FR')}</strong></div></div><p class="hint">${values.K} filtres donnent ${values.K} cartes. Paramètres : (${values.F} × ${values.F} × ${values.C} + 1 biais) × ${values.K} = ${params.toLocaleString('fr-FR')}. Leur nombre ne dépend pas de N.</p>`;
+  }
+  const onInput=e=>{if(e.target.dataset.shape){values[e.target.dataset.shape]=Number(e.target.value);update();}};
+  el.addEventListener('input',onInput);update();
+  return()=>el.removeEventListener('input',onInput);
+}
+
+function reluLab(el) {
+  const input=[-3,2,-1,0,5,-4,3,-2,1];let enabled=false;
+  function render(){el.innerHTML=`<div class="lab"><div class="lab-columns">${matrix(input,3,'Avant ReLU',v=>v<0?'negative':'positive')}${matrix(input.map(v=>enabled?Math.max(0,v):v),3,enabled?'Après ReLU':'Même carte · ReLU désactivée',v=>v<0?'negative':v>0?'positive':'')}</div><div class="equation">ReLU(x) = max(0, x)<br><strong>${enabled?'Les valeurs négatives deviennent 0. Les positives restent identiques.':'Observez les valeurs négatives avant d’activer ReLU.'}</strong></div><div class="lab-toolbar">${button('toggle',enabled?'Désactiver ReLU':'Appliquer ReLU',true)}${button('reset','Recommencer')}</div><p class="lab-note">La forme reste 3 × 3. ReLU n’apprend aucun poids ; elle introduit une non-linéarité entre les couches.</p></div>`;}
+  const click=e=>{const action=e.target.closest('[data-action]')?.dataset.action;if(action){enabled=action==='reset'?false:!enabled;render();}};
+  el.addEventListener('click',click);render();return()=>el.removeEventListener('click',click);
+}
+
+function poolingLab(type,el) {
+  const input=[1,3,2,1,5,6,1,2,4,2,8,3,1,0,4,9];let mode=type==='average'?'average':'max',position=0;
+  const patch=i=>{const r=Math.floor(i/2)*2,c=i%2*2;return [input[r*4+c],input[r*4+c+1],input[(r+1)*4+c],input[(r+1)*4+c+1]];};
+  const result=i=>mode==='max'?Math.max(...patch(i)):patch(i).reduce((a,b)=>a+b,0)/4;
+  function render(){const current=patch(position);el.innerHTML=`<div class="lab"><div class="lab-toolbar"><label class="control">Opération<select data-pooling><option value="max" ${mode==='max'?'selected':''}>Max pooling</option><option value="average" ${mode==='average'?'selected':''}>Average pooling</option></select></label><span class="pill">Fenêtre 2 × 2 · pas 2 · padding 0</span></div><div class="lab-columns">${matrix(input,4,'Entrée 4 × 4',(_,i)=>Math.floor(Math.floor(i/4)/2)*2+Math.floor((i%4)/2)===position?'selected':'',(_,i)=>`data-window="${Math.floor(Math.floor(i/4)/2)*2+Math.floor((i%4)/2)}"`)}${matrix(Array.from({length:4},(_,i)=>result(i)),2,'Sortie 2 × 2',(_,i)=>i===position?'active':'',(_,i)=>`data-window="${i}"`)}</div><div class="equation" aria-live="polite">${mode==='max'?`max(${current.join(', ')})`:`(${current.join(' + ')}) / 4`} <strong>= ${fmt(result(position))}</strong></div><div class="lab-toolbar">${Array.from({length:4},(_,i)=>`<button type="button" class="btn ${i===position?'primary':''}" data-window="${i}">Bloc ${i+1}</button>`).join('')}${button('next','Bloc suivant →')}</div><p class="lab-note">${mode==='max'?'On conserve la réponse la plus forte de chaque bloc.':'On conserve la valeur moyenne de chaque bloc.'} Le pooling ne possède aucun poids appris. Chaque canal est traité séparément : le nombre de canaux reste identique.</p><p class="hint">De petits déplacements peuvent garder le même maximum dans un bloc ; cette tolérance locale n’est pas une invariance garantie pour tous les déplacements.</p></div>`;}
+  const click=e=>{const target=e.target.closest('[data-window]');if(target){position=Number(target.dataset.window);render();}else if(e.target.closest('[data-action="next"]')){position=(position+1)%4;render();}};
+  const change=e=>{if(e.target.hasAttribute('data-pooling')){mode=e.target.value;render();}};
+  el.addEventListener('click',click);el.addEventListener('change',change);render();return()=>{el.removeEventListener('click',click);el.removeEventListener('change',change);};
+}
+
+function learningLab(el) {
+  const vertical=[0,1,0,0,1,0,0,1,0],horizontal=[0,0,0,1,1,1,0,0,0];
+  const samples=[];
+  for(const [pattern,y] of [[vertical,1],[horizontal,0]]){
+    for(const scale of [.5,.7,.85,1])samples.push({x:pattern.map((v,i)=>v*scale+(v===0&&i===0?.08:0)),y});
+  }
+  let weights=Array(9).fill(0),bias=0,epoch=0,timer=null,selected=0;
+  const sigmoid=z=>1/(1+Math.exp(-z));
+  const predict=x=>sigmoid(x.reduce((sum,v,i)=>sum+v*weights[i],bias));
+  const stop=()=>{if(timer)clearInterval(timer);timer=null;};
+  function metrics(){let loss=0,correct=0;for(const sample of samples){const p=predict(sample.x);loss-=sample.y*Math.log(Math.max(1e-12,p))+(1-sample.y)*Math.log(Math.max(1e-12,1-p));if(Number(p>=.5)===sample.y)correct++;}return{loss:loss/samples.length,accuracy:correct/samples.length};}
+  function step(){const gradient=Array(9).fill(0);let db=0;for(const sample of samples){const error=predict(sample.x)-sample.y;db+=error;sample.x.forEach((v,i)=>gradient[i]+=error*v);}weights=weights.map((v,i)=>v-.5*gradient[i]/samples.length);bias-=.5*db/samples.length;epoch++;}
+  function render(){const m=metrics(),sample=samples[selected],p=predict(sample.x);el.innerHTML=`<div class="lab"><div class="lab-toolbar"><span class="pill">Vrai calcul de gradient · 8 petits exemples artificiels</span><label class="control">Patch observé<select data-sample>${samples.map((s,i)=>`<option value="${i}" ${i===selected?'selected':''}>${s.y?'Vertical':'Horizontal'} · exemple ${i%4+1}</option>`).join('')}</select></label></div><div class="lab-columns">${matrix(sample.x,3,`Patch · cible ${sample.y?'verticale (1)':'horizontale (0)'}`,v=>v>0?'positive':'')}${matrix(weights,3,'Poids du filtre · appris',v=>v<-.01?'negative':v>.01?'positive':'')}<div class="stat"><small>Probabilité « vertical »</small><strong>${fmt(p*100,1)} %</strong><small>Cible : ${sample.y*100} %</small></div></div><div class="lab-columns"><div class="mini-stat"><small>Époques</small><strong>${epoch} / 100</strong></div><div class="mini-stat"><small>Erreur moyenne (entropie croisée)</small><strong>${fmt(m.loss,4)}</strong></div><div class="mini-stat"><small>Réussite sur ces 8 exemples</small><strong>${fmt(m.accuracy*100,1)} %</strong></div></div><div class="lab-toolbar">${button('train',timer?'Pause':epoch>=100?'Entraînement terminé':'▶ Apprendre',true)}${button('step','1 époque')}${button('reset','Réinitialiser')}</div><p class="equation">9 poids + 1 biais → score → sigmoïde → probabilité<br><strong>Biais appris : ${fmt(bias,4)}</strong></p><p class="lab-note">À chaque époque : prédire les 8 cibles, calculer l’erreur puis ajuster les poids avec un pas de 0,5. Le même filtre voit tous les exemples ; il apprend à séparer ces deux motifs.</p><p class="hint">Ce laboratoire entraîne réellement un seul filtre sur des patchs 3 × 3. Il ne constitue pas un CNN complet. La réussite affichée concerne uniquement les 8 exemples d’entraînement ; elle ne mesure pas la généralisation.</p></div>`;}
+  const click=e=>{const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;if(action==='reset'){stop();weights=Array(9).fill(0);bias=0;epoch=0;}if(action==='step'){stop();if(epoch<100)step();}if(action==='train'){if(timer)stop();else if(epoch<100)timer=setInterval(()=>{step();if(epoch>=100)stop();render();},110);}render();};
+  const change=e=>{if(e.target.hasAttribute('data-sample')){selected=Number(e.target.value);render();}};
+  el.addEventListener('click',click);el.addEventListener('change',change);render();return()=>{stop();el.removeEventListener('click',click);el.removeEventListener('change',change);};
+}
+
+function mountLab(type,container) {
+  if(['convolution','stride','padding'].includes(type))return convolutionLab(type,container);
+  if(type==='shapes')return shapeLab(container);
+  if(type==='relu')return reluLab(container);
+  if(['pooling','average'].includes(type))return poolingLab(type,container);
+  if(type==='learning')return learningLab(container);
+  return()=>{};
+}
+
+return { mountLab };
+})();
+const { mountBasic } = (() => {
+const format = value => new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 }).format(value);
+const matrix = (values, cols, options = {}) => `<div class="matrix" style="--cols:${cols};--cell-size:${options.size || 35}px" ${options.label ? `role="group" aria-label="${options.label}"` : ''}>${values.map((value, i) => options.buttons
+  ? `<button class="cell interactive-cell" type="button" data-cell="${i}" aria-label="Ligne ${Math.floor(i / cols) + 1}, colonne ${i % cols + 1}, valeur ${value}" aria-pressed="${!!value}">${value}</button>`
+  : `<span class="cell ${value < 0 ? 'negative' : value > 0 ? 'positive' : ''}" data-index="${i}">${value}</span>`).join('')}</div>`;
+
+function mountBasic(type, container) {
+  const handlers = { neuron, mlp, pixels, params, local, rgb, flatten };
+  if (!handlers[type]) return () => {};
+  const controller = new AbortController();
+  const on = (target, event, callback) => target.addEventListener(event, callback, { signal: controller.signal });
+  const $ = selector => container.querySelector(selector);
+  const $$ = selector => [...container.querySelectorAll(selector)];
+  handlers[type]({ container, on, $, $$ });
+  return () => controller.abort();
+}
+
+function neuron({ container, on, $, $$ }) {
+  const controls = [
+    ['x1', 'x₁ · luminosité à gauche', 0, 1, .8, .1],
+    ['x2', 'x₂ · luminosité à droite', 0, 1, .2, .1],
+    ['w1', 'Poids w₁', -2, 2, 1, .1],
+    ['w2', 'Poids w₂', -2, 2, -1, .1],
+    ['bias', 'Biais b', -2, 2, 0, .1]
+  ];
+  container.innerHTML = `<div class="lab-toolbar"><span class="pill">Essayez : augmentez un poids, puis le biais</span><button type="button" class="btn small" data-reset>Réinitialiser</button></div><div class="lab-columns neuron-demo"><div class="input-card" style="flex:1;min-width:230px">${controls.map(([key, label, min, max, value, step]) => `<div class="range-row"><label for="basic-${key}">${label}</label><input id="basic-${key}" type="range" min="${min}" max="${max}" value="${value}" step="${step}" data-param="${key}"><output for="basic-${key}" data-value="${key}">${format(value)}</output></div>`).join('')}</div><div class="neuron-diagram"><div class="signal-list"><div class="signal"><span class="signal-dot" data-signal="x1"></span><span>× <b data-signal="w1"></b></span><i class="signal-wire"></i></div><div class="signal"><span class="signal-dot" data-signal="x2"></span><span>× <b data-signal="w2"></b></span><i class="signal-wire"></i></div></div><div class="neuron-circle"><b>Σ</b><small>+ biais</small></div><span class="operator">→</span><div class="output-block"><small>Après ReLU</small><strong data-output></strong></div></div></div><div class="equation" aria-live="polite" data-equation></div><p class="lab-note">Exemple réduit à deux luminosités pour comprendre le calcul d’un neurone. Ces poids sont choisis à la main ; ce n’est pas un modèle de reconnaissance d’objets.</p>`;
+  const render = () => {
+    const values = Object.fromEntries($$('[data-param]').map(input => [input.dataset.param, +input.value]));
+    for (const [key, value] of Object.entries(values)) {
+      $(`[data-value="${key}"]`).textContent = format(value);
+      const signal = $(`[data-signal="${key}"]`);
+      if (signal) signal.textContent = format(value);
+    }
+    const z = values.x1 * values.w1 + values.x2 * values.w2 + values.bias;
+    $('[data-output]').textContent = format(Math.max(0, z));
+    $('[data-equation]').innerHTML = `z = (${format(values.x1)} × ${format(values.w1)}) + (${format(values.x2)} × ${format(values.w2)}) + (${format(values.bias)}) = <strong>${format(z)}</strong><br>ReLU(z) = max(0, ${format(z)}) = <strong>${format(Math.max(0, z))}</strong>`;
+  };
+  $$('[data-param]').forEach(input => on(input, 'input', render));
+  on($('[data-reset]'), 'click', () => { controls.forEach(([key, , , , value]) => { $(`[data-param="${key}"]`).value = value; }); render(); });
+  render();
+}
+
+function mlp({ container, on, $, $$ }) {
+  let selected = 0;
+  const layers = [
+    { name: 'Les entrées', label: '2 valeurs', x: 100, ys: [95, 185], text: 'Deux informations entrent dans le réseau. Chaque neurone de la couche suivante reçoit ces deux valeurs.' },
+    { name: 'La couche cachée', label: '3 neurones', x: 330, ys: [65, 140, 215], text: 'Chaque neurone calcule sa propre somme pondérée, ajoute son biais et applique une activation. Les trois neurones peuvent ainsi construire trois combinaisons différentes des entrées.' },
+    { name: 'La sortie', label: '2 neurones', x: 560, ys: [95, 185], text: 'Les neurones de sortie combinent les trois résultats précédents. Le réseau compose ainsi des transformations ; ses poids sont appris à partir d’exemples.' }
+  ];
+  container.innerHTML = `<div class="lab-caption"><span>Un petit réseau dense : 2 → 3 → 2</span><span>Schéma des connexions</span></div><div class="network-figure" data-network></div><div class="layer-buttons">${layers.map((layer, i) => `<button class="btn small" type="button" data-layer="${i}" aria-pressed="${i === 0}">${i + 1}. ${layer.name}</button>`).join('')}</div><p class="layer-info" data-info aria-live="polite"></p><p class="hint">Chaque trait est une connexion possédant son propre poids. Le schéma explique la structure, sans simuler une prédiction.</p>`;
+  function render() {
+    let edges = '';
+    for (let layer = 0; layer < 2; layer++) for (const y1 of layers[layer].ys) for (const y2 of layers[layer + 1].ys) {
+      const active = layer + 1 === selected;
+      edges += `<line x1="${layers[layer].x + 23}" y1="${y1}" x2="${layers[layer + 1].x - 23}" y2="${y2}" stroke="${active ? '#58824e' : '#d3dfca'}" stroke-width="${active ? 2 : 1.2}" />`;
+    }
+    const nodes = layers.map((layer, i) => layer.ys.map((y, j) => `<circle cx="${layer.x}" cy="${y}" r="24" fill="${i === selected ? '#d9ef94' : '#f4f7ed'}" stroke="${i === selected ? '#527447' : '#a6bf93'}" stroke-width="1.5"/><text x="${layer.x}" y="${y + 4}" text-anchor="middle" class="svg-label-dark">${i ? 'Σ' : `x${j + 1}`}</text>`).join('') + `<text x="${layer.x}" y="272" text-anchor="middle" class="svg-label">${layer.label}</text>`).join('');
+    $('[data-network]').innerHTML = `<svg viewBox="0 0 660 295" role="img" aria-label="Réseau dense : deux entrées reliées à trois neurones cachés, reliés à deux neurones de sortie">${edges}${nodes}</svg>`;
+    $('[data-info]').textContent = layers[selected].text;
+    $$('[data-layer]').forEach(button => { const active = +button.dataset.layer === selected; button.classList.toggle('primary', active); button.setAttribute('aria-pressed', active); });
+  }
+  $$('[data-layer]').forEach(button => on(button, 'click', () => { selected = +button.dataset.layer; render(); }));
+  render();
+}
+
+function pixels({ container, on, $, $$ }) {
+  const patterns = {
+    digit: ['00011000', '00111000', '01011000', '00011000', '00011000', '00011000', '01111110', '00000000'],
+    arrow: ['00010000', '00011000', '11111100', '11111110', '11111100', '00011000', '00010000', '00000000'],
+    blank: Array(8).fill('00000000')
+  };
+  let values = patterns.digit.join('').split('').map(Number);
+  container.innerHTML = `<div class="lab-toolbar"><label class="control">Dessin de départ <select data-pattern><option value="digit">Un chiffre 1</option><option value="arrow">Une flèche</option><option value="blank">Une grille vide</option></select></label><button class="btn small" type="button" data-clear>Tout effacer</button><span class="pill">Cliquez sur les pixels pour dessiner</span></div><div class="pixel-demo"><div class="matrix-group"><div class="matrix-label">Les 64 valeurs de l’image</div>${matrix(values, 8, { buttons: true, size: 28, label: 'Dessin modifiable de huit lignes et huit colonnes' })}</div><div class="pixel-preview"><div><div class="matrix-label">Le même tableau, vu comme une image</div><div data-preview style="margin-top:14px"></div></div><div class="pixel-readout"><h3>8 × 8 = 64 pixels</h3><p>0 = noir<br>1 = blanc</p><p data-pixel-info aria-live="polite">Choisissez une case pour inverser sa valeur.</p></div></div></div><p class="lab-note">Image binaire : chaque pixel vaut 0 ou 1. Une image en niveaux de gris utilise davantage de valeurs, souvent de 0 à 255 avant normalisation.</p>`;
+  const render = () => {
+    $$('[data-cell]').forEach((button, i) => {
+      button.textContent = values[i];
+      button.style.background = values[i] ? '#fff' : '#000';
+      button.style.color = values[i] ? '#17392f' : '#fff';
+      button.setAttribute('aria-pressed', !!values[i]);
+      button.setAttribute('aria-label', `Ligne ${Math.floor(i / 8) + 1}, colonne ${i % 8 + 1}, valeur ${values[i]}. Cliquer pour inverser.`);
+    });
+    $('[data-preview]').innerHTML = `<svg viewBox="0 0 8 8" role="img" aria-label="Aperçu du dessin composé des 64 pixels" style="display:block;image-rendering:pixelated;border:1px solid #dce3d7;border-radius:4px">${values.map((v, i) => `<rect x="${i % 8}" y="${Math.floor(i / 8)}" width="1" height="1" fill="${v ? '#fff' : '#000'}"/>`).join('')}</svg>`;
+  };
+  $$('[data-cell]').forEach(button => on(button, 'click', () => {
+    const i = +button.dataset.cell;
+    values[i] = 1 - values[i];
+    $('[data-pixel-info]').textContent = `Pixel ligne ${Math.floor(i / 8) + 1}, colonne ${i % 8 + 1} : ${values[i]}.`;
+    render();
+  }));
+  on($('[data-pattern]'), 'change', event => { values = patterns[event.target.value].join('').split('').map(Number); $('[data-pixel-info]').textContent = 'Choisissez une case pour inverser sa valeur.'; render(); });
+  on($('[data-clear]'), 'click', () => { values = Array(64).fill(0); $('[data-pattern]').value = 'blank'; $('[data-pixel-info]').textContent = 'Grille effacée. Dessinez votre propre motif.'; render(); });
+  render();
+}
+
+function params({ container, on, $, $$ }) {
+  container.innerHTML = `<div class="lab-toolbar"><label class="control">Image <select data-n><option value="32">32 × 32 × 3</option><option value="64">64 × 64 × 3</option></select></label><label class="control">Neurones denses <select data-h><option value="100">100</option><option value="32">32</option></select></label><label class="control">Filtres 3 × 3 <select data-k><option value="16">16</option><option value="8">8</option></select></label></div><div class="params-compare"><div class="params-card"><span>COUCHE DENSE APRÈS FLATTEN</span><strong data-dense-count></strong><p>paramètres, biais inclus</p><code data-dense-calc></code><p data-dense-shape style="margin:15px 0 0"></p></div><div class="params-card"><span>COUCHE CONVOLUTIVE</span><strong data-conv-count></strong><p>paramètres, biais inclus</p><code data-conv-calc></code><p data-conv-shape style="margin:15px 0 0"></p></div></div><div class="feedback" data-params-message aria-live="polite"></div><p class="lab-note">On compare ici les connexions de deux couches aux sorties différentes, pas deux réseaux complets ni leur précision. Convolution standard : stride 1, padding 1, un biais par filtre.</p>`;
+  function render() {
+    const n = +$('[data-n]').value, h = +$('[data-h]').value, k = +$('[data-k]').value;
+    const dense = (n * n * 3 + 1) * h, conv = (3 * 3 * 3 + 1) * k;
+    $('[data-dense-count]').textContent = format(dense);
+    $('[data-conv-count]').textContent = format(conv);
+    $('[data-dense-calc]').textContent = `(${n} × ${n} × 3 + 1) × ${h}`;
+    $('[data-conv-calc]').textContent = `(3 × 3 × 3 + 1) × ${k}`;
+    $('[data-dense-shape]').textContent = `Sortie : ${h} valeurs.`;
+    $('[data-conv-shape]').textContent = `Sortie : ${n} × ${n} × ${k}.`;
+    $('[data-params-message]').textContent = `Les ${k} filtres réutilisent leurs ${format(conv)} paramètres à chaque position. Agrandir l’image ne change pas ce nombre ; le volume de sortie et le travail de calcul augmentent.`;
+  }
+  $$('select').forEach(select => on(select, 'change', render));
+  render();
+}
+
+function local({ container, on, $, $$ }) {
+  let position = 0;
+  const image = Array.from({ length: 49 }, (_, i) => i % 7 >= 3 ? 1 : 0);
+  const filter = [1, 0, -1, 1, 0, -1, 1, 0, -1];
+  container.innerHTML = `<div class="lab-toolbar"><button class="btn primary small" type="button" data-move>Déplacer le filtre d’une case →</button><span class="pill" data-position></span></div><div class="local-graphic"><div class="matrix-group"><div class="matrix-label">Une petite zone de l’image</div>${matrix(image, 7, { size: 31, label: 'Image 7 par 7 avec une fenêtre de 3 par 3' })}</div><span class="operator">×</span><div class="matrix-group"><div class="matrix-label">Toujours les mêmes 9 poids</div><div data-kernel>${matrix(filter, 3, { size: 40 })}</div></div><div class="local-detail"><h3>La fenêtre bouge.<br>Les poids restent.</h3><p>Le filtre inspecte seulement 3 × 3 pixels à la fois. À la position suivante, il réutilise les mêmes poids.</p></div></div><div class="equation" data-local-output aria-live="polite"></div><p class="lab-note">Quand on translate un motif, sa carte de réponses se déplace aussi dans des conditions adaptées. Une classification finale n’est pas automatiquement invariante à tous les déplacements.</p>`;
+  function render() {
+    const row = 2, col = 1 + position;
+    const cells = [...container.querySelectorAll('.local-graphic > .matrix-group:first-child .cell')];
+    cells.forEach((cell, i) => {
+      const r = Math.floor(i / 7), c = i % 7;
+      const active = r >= row && r < row + 3 && c >= col && c < col + 3;
+      cell.classList.toggle('window', active);
+      cell.setAttribute('aria-label', `${image[i]}${active ? ', dans la fenêtre' : ''}`);
+    });
+    const patch = Array.from({ length: 9 }, (_, i) => image[(row + Math.floor(i / 3)) * 7 + col + i % 3]);
+    const result = patch.reduce((sum, value, i) => sum + value * filter[i], 0);
+    $('[data-position]').textContent = `Position ${position + 1} sur 2 · fenêtre 3 × 3`;
+    $('[data-local-output]').innerHTML = `Réponse à cette position : <strong>${result}</strong> · biais = 0<br>9 poids utilisés ici, puis réutilisés à la position suivante.`;
+    $('[data-move]').textContent = position ? '← Revenir à la première position' : 'Déplacer le filtre d’une case →';
+  }
+  on($('[data-move]'), 'click', () => { position = 1 - position; render(); });
+  render();
+}
+
+function rgb({ container, on, $, $$ }) {
+  const channels = [['r', 'Rouge', 190], ['g', 'Vert', 120], ['b', 'Bleu', 70]];
+  container.innerHTML = `<div class="lab-caption"><span>Un pixel couleur = trois intensités</span><span>Déplacez les curseurs</span></div><div class="rgb-planes">${channels.map(([key, label, value]) => `<div class="rgb-plane"><label for="rgb-${key}">${label} · <output for="rgb-${key}" data-value="${key}">${value}</output></label><input id="rgb-${key}" type="range" min="0" max="255" step="1" value="${value}" data-channel="${key}"></div>`).join('')}<span class="operator">→</span><div class="rgb-swatch" data-swatch role="img"></div></div><div class="equation" data-rgb-label aria-live="polite"></div><div class="mini-stats"><div class="mini-stat"><strong>3</strong><span>canaux en entrée : RGB</span></div><div class="mini-stat"><strong>3 × 3 × 3</strong><span>27 poids pour un filtre 3 × 3</span></div><div class="mini-stat"><strong>1</strong><span>carte produite par ce filtre</span></div></div><p class="lab-note">Un filtre standard possède une tranche 3 × 3 par canal. Il additionne leurs contributions et ajoute un biais pour produire une seule carte. Avec K filtres, on obtient K cartes, pas 3 × K.</p>`;
+  function render() {
+    const values = Object.fromEntries($$('[data-channel]').map(input => [input.dataset.channel, +input.value]));
+    for (const [key, value] of Object.entries(values)) $(`[data-value="${key}"]`).textContent = value;
+    $('[data-swatch]').style.background = `rgb(${values.r},${values.g},${values.b})`;
+    $('[data-swatch]').setAttribute('aria-label', `Couleur résultante : rouge ${values.r}, vert ${values.g}, bleu ${values.b}`);
+    $('[data-rgb-label]').textContent = `Ce pixel : [${values.r}, ${values.g}, ${values.b}] · Chaque position de l’image contient ses trois valeurs.`;
+  }
+  $$('[data-channel]').forEach(input => on(input, 'input', render));
+  render();
+}
+
+function flatten({ container, on, $, $$ }) {
+  let selected = -1;
+  const values = Array.from({ length: 18 }, (_, i) => i + 1);
+  container.innerHTML = `<div class="lab-toolbar"><button class="btn primary small" type="button" data-next>Suivre la première valeur →</button><button class="btn small" type="button" data-reset>Réinitialiser</button><span class="pill">Cliquez aussi sur une valeur</span></div><div class="lab-columns"><div><div class="matrix-label">Volume : 3 × 3 × 2</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">${[0, 1].map(channel => `<div><p class="channel-label" style="margin:12px 0 0">Canal ${channel + 1}</p><div class="matrix" style="--cols:3;--cell-size:34px">${values.slice(channel * 9, channel * 9 + 9).map((v, i) => `<button class="cell positive" data-source="${channel * 9 + i}" type="button" aria-label="Valeur ${v}, canal ${channel + 1}, ligne ${Math.floor(i / 3) + 1}, colonne ${i % 3 + 1}">${v}</button>`).join('')}</div></div>`).join('')}</div></div><span class="operator">→</span><div class="matrix-group"><div class="matrix-label">Vecteur : 18 valeurs</div><div class="flatten-vector" style="margin:18px auto">${values.map((v, i) => `<button class="cell positive" type="button" data-target="${i}" aria-label="Position ${i + 1} dans le vecteur : valeur ${v}">${v}</button>`).join('')}</div></div></div><div class="equation" data-flatten-info aria-live="polite">3 × 3 × 2 = <strong>18 éléments avant et après flatten</strong></div><p class="lab-note">Ordre choisi ici : toutes les valeurs du canal 1, puis celles du canal 2. D’autres bibliothèques peuvent utiliser un autre ordre. Flatten conserve les valeurs et leur nombre, sans apprendre de poids.</p>`;
+  function render() {
+    $$('[data-source], [data-target]').forEach(button => {
+      const index = +(button.dataset.source ?? button.dataset.target);
+      const active = index === selected;
+      button.classList.toggle('focus-cell', active);
+      button.setAttribute('aria-pressed', active);
+    });
+    $('[data-flatten-info]').innerHTML = selected < 0 ? '3 × 3 × 2 = <strong>18 éléments avant et après flatten</strong>' : `Valeur <strong>${values[selected]}</strong> du canal ${Math.floor(selected / 9) + 1} → position <strong>${selected + 1}</strong> dans la liste. Aucun élément n’est supprimé.`;
+    $('[data-next]').textContent = selected < 0 ? 'Suivre la première valeur →' : selected === 17 ? 'Revenir à la première valeur →' : 'Suivre la valeur suivante →';
+  }
+  $$('[data-source], [data-target]').forEach(button => on(button, 'click', () => { selected = +(button.dataset.source ?? button.dataset.target); render(); }));
+  on($('[data-next]'), 'click', () => { selected = (selected + 1) % 18; render(); });
+  on($('[data-reset]'), 'click', () => { selected = -1; render(); });
+  render();
+}
+
+return { mountBasic };
+})();
+const { mountVisual } = (() => {
+const fmt=(n,d=2)=>Number.isInteger(n)?String(n):Number(n.toFixed(d)).toLocaleString('fr-FR');
+const kernels=[
+  {id:'vertical',name:'Bords verticaux',w:[-1,0,1,-1,0,1,-1,0,1]},
+  {id:'horizontal',name:'Bords horizontaux',w:[-1,-1,-1,0,0,0,1,1,1]},
+  {id:'blur',name:'Moyenne · flou',w:Array(9).fill(1/9)}
+];
+const grid=(values,cols,label,pixels=false)=>`<div class="matrix-group"><div class="matrix-label">${label}</div><div class="matrix" role="img" aria-label="${label} : ${values.map(v=>fmt(v)).join(', ')}" style="--cols:${cols}">${values.map(v=>`<span class="cell ${v>0?'positive':v<0?'negative':''}" ${pixels?`style="background:${v?'#28523e':'#edf2e7'};color:${v?'#fff':'#92a28e'}"`:''}>${fmt(v)}</span>`).join('')}</div></div>`;
+function image(pattern){return Array.from({length:49},(_,i)=>{const r=Math.floor(i/7),c=i%7;return Number(pattern==='horizontal'?r===3:pattern==='corner'?r>=3&&c>=3:c===3);});}
+function convolve(input,weights){return Array.from({length:25},(_,i)=>{const r=Math.floor(i/5),c=i%5;return weights.reduce((sum,w,j)=>sum+w*input[(r+Math.floor(j/3))*7+c+j%3],0);});}
+
+function filtersLab(type,el){
+  let pattern='vertical',selected=0;
+  function render(){const values=image(pattern);el.innerHTML=`<div class="lab"><div class="lab-toolbar"><span class="matrix-label">Image à examiner</span>${[['vertical','Trait vertical'],['horizontal','Trait horizontal'],['corner','Coin']].map(([key,name])=>`<button type="button" class="btn ${pattern===key?'primary':''}" data-pattern="${key}" aria-pressed="${pattern===key}">${name}</button>`).join('')}</div>
+    ${type==='filters'?`<div class="lab-toolbar"><label class="control">Filtre<select data-filter aria-label="Choisir un filtre">${kernels.map((k,i)=>`<option value="${i}" ${selected===i?'selected':''}>${k.name}</option>`).join('')}</select></label><span class="pill">F = 3 · S = 1 · P = 0 · biais = 0</span></div><div class="lab-columns">${grid(values,7,'Image 7 × 7',true)}<span class="operator" aria-hidden="true">×</span>${grid(kernels[selected].w,3,kernels[selected].name)}<span class="operator" aria-hidden="true">→</span>${grid(convolve(values,kernels[selected].w),5,'Carte 5 × 5')}</div>`:`<div style="display:flex;justify-content:center;margin:8px 0 24px">${grid(values,7,'Une seule image · 7 × 7 × 1',true)}</div><div class="filter-results">${kernels.map(k=>`<div class="filter-panel"><h3>${k.name}</h3>${grid(k.w,3,'Noyau 3 × 3')}<span class="operator" aria-hidden="true">↓</span>${grid(convolve(values,k.w),5,'Carte 5 × 5')}</div>`).join('')}</div><div class="equation"><strong>3 filtres → 3 cartes → volume 5 × 5 × 3</strong></div>`}
+    <p class="hint"><span class="pill green">Positif</span> réponse dans un sens · <span class="pill orange">Négatif</span> sens opposé · 0 : aucune réponse à cet endroit.</p><p class="lab-note">Ces noyaux sont choisis à la main pour rendre le calcul visible. Les valeurs des cartes sont réellement calculées. Dans un CNN entraîné, les poids sont appris. Un filtre de bords peut répondre positivement ou négativement selon le sens de variation.</p></div>`;}
+  const click=e=>{const button=e.target.closest('[data-pattern]');if(button){pattern=button.dataset.pattern;render();el.querySelector(`[data-pattern="${pattern}"]`)?.focus({preventScroll:true});}};
+  const change=e=>{if(e.target.hasAttribute('data-filter')){selected=Number(e.target.value);render();el.querySelector('[data-filter]')?.focus({preventScroll:true});}};
+  el.addEventListener('click',click);el.addEventListener('change',change);render();return()=>{el.removeEventListener('click',click);el.removeEventListener('change',change);};
+}
+
+function architectureLab(el){
+  const blocks=[
+    {title:'Image',shape:'32 × 32 × 3',text:'Une image couleur possède deux dimensions spatiales et trois canaux : rouge, vert et bleu. Les valeurs des pixels sont les entrées du réseau.'},
+    {title:'Conv · 16 filtres',shape:'32 × 32 × 16',text:'Chaque filtre 3 × 3 traverse les 3 canaux et produit une carte. Avec S = 1 et P = 1, la hauteur et la largeur restent 32. Les 16 filtres donnent 16 cartes. Paramètres appris : (3 × 3 × 3 + 1) × 16 = 448.'},
+    {title:'ReLU',shape:'32 × 32 × 16',text:'ReLU remplace les valeurs négatives par zéro et conserve les positives. Elle ajoute une non-linéarité, sans changer la forme et sans apprendre de paramètre.'},
+    {title:'MaxPool · 2 × 2',shape:'16 × 16 × 16',text:'Avec une fenêtre 2 × 2, un pas de 2 et aucun padding, chaque carte est divisée par 2 en hauteur et en largeur. Le nombre de cartes reste 16. Aucun poids n’est appris.'},
+    {title:'Flatten',shape:'4 096 valeurs',text:'Les 16 × 16 × 16 = 4 096 valeurs sont réorganisées en un seul vecteur. Flatten ne supprime aucune valeur et ne réalise aucun calcul appris.'},
+    {title:'Dense · 3 classes',shape:'3 scores',text:'La couche dense combine les 4 096 caractéristiques pour produire un score par classe. Elle apprend (4 096 + 1) × 3 = 12 291 paramètres. Une softmax peut ensuite convertir les scores en probabilités.'}
+  ];let selected=0;
+  function render(){el.innerHTML=`<div class="lab"><div class="lab-caption"><span>Un exemple de CNN pour 3 classes</span><span>Les formes après chaque opération</span></div><div class="architecture-flow">${blocks.map((b,i)=>`${i?'<span class="flow-arrow" aria-hidden="true">→</span>':''}<button type="button" class="flow-block ${i===selected?'active':''}" data-block="${i}" aria-pressed="${i===selected}"><strong>${b.title}</strong><small>${b.shape}</small></button>`).join('')}</div><div class="feedback" aria-live="polite"><strong>${blocks[selected].title}</strong><br>${blocks[selected].text}</div><div class="lab-toolbar" style="margin-top:20px;margin-bottom:0"><button type="button" class="btn primary" data-next>Suivre le signal →</button><span class="pill">Cliquez sur chaque couche</span></div><p class="lab-note">C’est une architecture pédagogique possible. On peut répéter les convolutions, utiliser d’autres activations et remplacer Flatten + Dense par d’autres têtes de classification.</p></div>`;}
+  const click=e=>{const block=e.target.closest('[data-block]'),next=e.target.closest('[data-next]');if(!block&&!next)return;selected=block?Number(block.dataset.block):(selected+1)%blocks.length;render();el.querySelector(next?'[data-next]':`[data-block="${selected}"]`)?.focus({preventScroll:true});};
+  el.addEventListener('click',click);render();return()=>el.removeEventListener('click',click);
+}
+
+function classifierLab(el){
+  const labels=['Chat','Chien','Autre'],scores=[1.2,.4,-.8];
+  el.innerHTML=`<div class="lab"><div class="lab-caption"><span>Une couche de sortie à 3 classes</span><span class="pill orange">Scores fictifs pour l’explication</span></div><div class="lab-toolbar">${labels.map((label,i)=>`<label class="control">Score « ${label} » <input type="range" min="-3" max="3" step="0.1" value="${scores[i]}" data-score="${i}" aria-label="Score de la classe ${label}"><output data-score-value="${i}">${fmt(scores[i],1)}</output></label>`).join('')}</div><div data-probabilities aria-live="polite"></div><p class="lab-note">Les scores, appelés logits, seraient produits par la couche dense d’un vrai modèle. Ici vous les réglez vous-même : aucune image n’est classifiée. La softmax transforme ces scores en probabilités dont la somme vaut 1.</p><p class="hint">Une grande probabilité indique la préférence du modèle parmi ces classes. Elle ne garantit pas que sa prédiction est correcte.</p></div>`;
+  function update(){const max=Math.max(...scores),exp=scores.map(v=>Math.exp(v-max)),sum=exp.reduce((a,b)=>a+b,0),prob=exp.map(v=>v/sum),winner=prob.indexOf(Math.max(...prob));el.querySelector('[data-probabilities]').innerHTML=`${labels.map((label,i)=>`<div class="prob-row"><strong>${label}</strong><div class="bar-track" role="meter" aria-label="Probabilité ${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${(prob[i]*100).toFixed(2)}"><div class="bar-fill ${i===winner?'win':''}" style="width:${prob[i]*100}%"></div></div><span>${fmt(prob[i]*100,1)} %</span></div>`).join('')}<div class="equation">pᵢ = exp(scoreᵢ) / Σ exp(scoreⱼ)<br><strong>Classe préférée : ${labels[winner]} · somme = ${fmt(prob.reduce((a,b)=>a+b,0)*100,2)} %</strong></div>`;scores.forEach((v,i)=>el.querySelector(`[data-score-value="${i}"]`).textContent=fmt(v,1));}
+  const input=e=>{if(e.target.dataset.score!==undefined){scores[Number(e.target.dataset.score)]=Number(e.target.value);update();}};
+  el.addEventListener('input',input);update();return()=>el.removeEventListener('input',input);
+}
+
+function lenetLab(el){
+  const blocks=[
+    ['Entrée','32 × 32 × 1','Une image en niveaux de gris de 32 × 32 pixels entre dans LeNet-5. L’architecture a été conçue pour la reconnaissance de caractères.'],
+    ['C1 · convolution','28 × 28 × 6','Six filtres 5 × 5 sans padding : (32 − 5) + 1 = 28. Chaque filtre produit une carte de 28 × 28.'],
+    ['S2 · sous-échant.','14 × 14 × 6','Le sous-échantillonnage réduit chaque carte de moitié. Dans LeNet-5 original, il comporte des coefficients appris ; ce n’est pas le max pooling moderne.'],
+    ['C3 · convolution','10 × 10 × 16','Des filtres 5 × 5 donnent 16 cartes de 10 × 10. Le réseau original utilise des connexions partielles entre les cartes, ce qui réduit les paramètres.'],
+    ['S4 · sous-échant.','5 × 5 × 16','Une nouvelle réduction de moitié donne 16 cartes de 5 × 5.'],
+    ['C5 · convolution','120 valeurs','Les filtres 5 × 5 couvrent les cartes de 5 × 5 : sortie 1 × 1 × 120, soit 120 valeurs. C5 est une couche convolutive, même si elle ressemble ici à une couche dense.'],
+    ['F6 · dense','84 valeurs','Une couche entièrement connectée transforme les 120 valeurs en 84 activations.'],
+    ['Sortie','10 classes','La version originale utilise une sortie à fonctions de base radiale pour reconnaître 10 chiffres. Elle ne se termine pas par une softmax.']
+  ];let selected=0;
+  function render(){el.innerHTML=`<div class="lab"><div class="lab-caption"><span>LeNet-5 · LeCun et collaborateurs, 1998</span><span>Une architecture historique</span></div><div class="architecture-flow">${blocks.map(([name,shape],i)=>`${i?'<span class="flow-arrow" aria-hidden="true">→</span>':''}<button type="button" class="flow-block ${selected===i?'active':''}" data-lenet="${i}" aria-pressed="${selected===i}"><strong>${name}</strong><small>${shape}</small></button>`).join('')}</div><div class="feedback" aria-live="polite"><strong>${blocks[selected][0]}</strong><br>${blocks[selected][2]}</div><p class="lenet-caption">Le principe reste reconnaissable : des filtres, des cartes de plus en plus petites, puis une décision. Les opérations précises diffèrent de notre CNN pédagogique.</p><p class="lab-note">Version originale : fonctions d’activation sigmoïdes de type tanh, sous-échantillonnage avec paramètres appris et sortie à bases radiales. Les reproductions modernes ReLU / max pooling / softmax sont des adaptations.</p><p class="source-links">Source : <a href="https://leon.bottou.org/publications/pdf/ieee-1998.pdf" target="_blank" rel="noopener noreferrer">LeCun et al., Gradient-Based Learning Applied to Document Recognition (1998)</a>.</p></div>`;}
+  const click=e=>{const block=e.target.closest('[data-lenet]');if(block){selected=Number(block.dataset.lenet);render();el.querySelector(`[data-lenet="${selected}"]`)?.focus({preventScroll:true});}};
+  el.addEventListener('click',click);render();return()=>el.removeEventListener('click',click);
+}
+
+function mountVisual(type,container){
+  if(type==='filters'||type==='filterbank')return filtersLab(type,container);
+  if(type==='architecture')return architectureLab(container);
+  if(type==='classifier')return classifierLab(container);
+  if(type==='lenet')return lenetLab(container);
+  return()=>{};
+}
+
+return { mountVisual };
+})();
+const $ = (selector, root = document) => root.querySelector(selector);
+const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STORE_KEY = 'cnn-explorer-dit-v1';
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {}; } catch {}
+if (typeof saved !== 'object' || Array.isArray(saved)) saved = {};
+const state = { index:0, visited:new Set(Array.isArray(saved.visited) ? saved.visited : []), notes:false, quiz:saved.quiz || {answers:[],position:0}, exercise:Array.isArray(saved.exercise) ? saved.exercise : Array(12).fill('') };
+if (!Array.isArray(state.quiz.answers) || !Number.isInteger(state.quiz.position) || state.quiz.position < 0 || state.quiz.position > 5) state.quiz = {answers:[],position:0};
+const sections = [...new Set(slides.map(s => s.section))];
+const expanded = new Set();
+let cleanup = () => {};
+const save = () => {try {localStorage.setItem(STORE_KEY, JSON.stringify({slide:slides[state.index].id,visited:[...state.visited],quiz:state.quiz,exercise:state.exercise}));}catch{}};
+function indexFromHash() {let id;try{id=decodeURIComponent(location.hash.replace(/^#\/?/,''));}catch{return -1;}return slides.findIndex(s=>s.id===id);}
+const initial = indexFromHash();
+state.index = initial >= 0 ? initial : Math.max(0,slides.findIndex(s=>s.id===saved.slide));
+if(initial<0)history.replaceState(null,'','#/'+slides[state.index].id);
+function go(index) {
+  index = Math.min(slides.length-1,Math.max(0,index));
+  if (index === state.index) {closeMenu(); return;}
+  state.index = index;
+  history.pushState(null,'','#/'+slides[index].id);
+  render();
+  closeMenu();
+  window.scrollTo({top:0,behavior:'instant'});
+  $('#lesson').focus({preventScroll:true});
+}
+function closeMenu(){document.body.classList.remove('menu-open');$('#menu-button').setAttribute('aria-expanded','false');$('#scrim').hidden=true;}
+function renderNav(){
+  const activeSection=slides[state.index].section;expanded.add(activeSection);
+  $('#course-nav').innerHTML=sections.map((section,j)=>`<div class="nav-section"><button class="section-title" data-section="${j}" aria-expanded="${expanded.has(section)}" aria-controls="section-${j}"><span class="section-number">${section.slice(0,2)}</span>${escapeHTML(section.slice(3))}<span class="chevron" aria-hidden="true">${expanded.has(section)?'−':'+'}</span></button><div class="section-items" id="section-${j}" ${expanded.has(section)?'':'hidden'}>${slides.map((s,i)=>s.section===section?`<button class="nav-link ${state.visited.has(s.id)?'visited':''}" data-slide="${i}" ${i===state.index?'aria-current="step"':''}><span class="nav-dot" aria-hidden="true"></span><span>${escapeHTML(s.demo==='hero'?'Bienvenue au laboratoire':s.title)}</span></button>`:'').join('')}</div></div>`).join('');
+  const nav=$('#course-nav'),current=$('[aria-current="step"]',nav);
+  if(current){const top=current.offsetTop-nav.offsetTop;if(top<nav.scrollTop||top+current.offsetHeight>nav.scrollTop+nav.clientHeight)nav.scrollTop=Math.max(0,top-nav.clientHeight/2);}
+}
+function notesMarkup(slide){return `<aside class="teacher-notes" ${state.notes?'':'hidden'}><strong>Question à poser · ${slide.duration} min environ</strong><p>${escapeHTML(slide.prompt)}</p><p>${escapeHTML(slide.notes)}</p><p class="source-note">${escapeHTML(slide.source)}</p></aside>`;}
+function render(){
+  cleanup();cleanup=()=>{};
+  const slide=slides[state.index];state.visited.add(slide.id);save();renderNav();
+  const number=String(state.index+1).padStart(2,'0');
+  $('#slide-count').textContent=`${number} / ${slides.length}`;
+  $('#progress-fill').style.width=`${(state.index+1)/slides.length*100}%`;
+  $('.progress-track').setAttribute('aria-valuenow',String(state.index+1));
+  $('#previous').disabled=state.index===0;
+  $('#next').innerHTML=state.index===slides.length-1?'Revenir au début ↺':'Suivant <span aria-hidden="true">→</span>';
+  document.title=`${number} · ${slide.title} — CNN Explorer`;
+  $('#announcement').textContent=`Diapositive ${state.index+1} sur ${slides.length}. ${slide.title}`;
+  if(slide.demo==='hero'){
+    $('#lesson').innerHTML=heroMarkup()+notesMarkup(slide);
+    $('#start-course').addEventListener('click',()=>go(1));
+    return;
+  }
+  $('#lesson').innerHTML=`<div class="lesson-topline"><span class="eyebrow">${escapeHTML(slide.kicker)}</span><span class="divider"></span><span class="time">${slide.duration} min</span></div><div class="lesson-header"><h1>${escapeHTML(slide.title)}</h1><p class="lesson-intro">${escapeHTML(slide.intro)}</p></div><div id="demo-mount"></div><div class="takeaway"><span class="bulb" aria-hidden="true">✦</span><p><strong>À retenir.</strong> ${escapeHTML(slide.takeaway)}</p></div>${notesMarkup(slide)}`;
+  const container=$('#demo-mount');
+  if(['convolution','stride','padding','shapes','relu','pooling','average','learning'].includes(slide.demo))cleanup=mountLab(slide.demo,container);
+  else if(['neuron','mlp','pixels','params','local','rgb','flatten'].includes(slide.demo)){container.classList.add('lab');cleanup=mountBasic(slide.demo,container);}
+  else if(['filters','filterbank','architecture','classifier','lenet'].includes(slide.demo))cleanup=mountVisual(slide.demo,container);
+  else if(slide.demo==='dotquiz')mountDotQuiz(container,slide.question);
+  else if(slide.demo==='exercise')mountExercise(container);
+  else if(slide.demo==='quiz')mountQuiz(container);
+  else if(slide.demo==='recap')mountRecap(container);
+  else if(slide.demo==='challenge')mountChallenge(container);
+  else if(slide.demo==='finish')mountFinish(container);
+}
+
+function heroIllustration(){
+  const shape=['00111000','01101100','11000110','00001100','00011000','00110000','01111110','00000000'].join('');
+  const cells=[...shape].map((v,i)=>{const r=Math.floor(i/8),c=i%8;return `<rect x="${c*22+9}" y="${r*22+9}" width="19" height="19" rx="2.5" fill="${v==='1'?'#5c8263':'#d9e4cd'}" opacity="${v==='1'?'.95':'.7'}"/>`;}).join('');
+  const kernel=[-1,0,1,-1,0,1,-1,0,1].map((v,i)=>`<rect x="${i%3*20+6}" y="${Math.floor(i/3)*20+6}" width="17" height="17" rx="2" fill="${v>0?'#90b54d':v<0?'#d9e4bc':'#e8efdb'}"/><text x="${i%3*20+14.5}" y="${Math.floor(i/3)*20+18}" text-anchor="middle" font-family="monospace" font-size="8" fill="#4d6939">${v}</text>`).join('');
+  const outputs=Array.from({length:25},(_,i)=>`<rect x="${i%5*18+6}" y="${Math.floor(i/5)*18+6}" width="15" height="15" rx="2" fill="${['#e9eddc','#bed5a4','#8eae70','#d4e1bc','#537c51'][(i*7+Math.floor(i/5))%5]}"/>`).join('');
+  return `<svg viewBox="0 0 460 390" role="img" aria-label="Une image représentée par une grille de pixels, un filtre de trois par trois et une carte de caractéristiques reliés par des flèches"><defs><filter id="plate-shadow" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#385b28" flood-opacity=".11"/></filter><marker id="arrow-tip" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#9db58b" stroke-width="1.1"/></marker></defs><g transform="translate(72 91) matrix(.94,.29,-.34,.86,0,0)" filter="url(#plate-shadow)"><rect x="5" y="8" width="189" height="189" rx="9" fill="#d3dfc8"/><rect width="189" height="189" rx="9" fill="#f7f9f0" stroke="#d9e2d2"/>${cells}<rect x="28" y="28" width="66" height="66" rx="4" fill="#d3ed75" fill-opacity=".37" stroke="#75a045" stroke-width="2"/><text x="5" y="213" fill="#64815c" font-size="10" font-family="Arial,sans-serif">01 / IMAGE D’ENTRÉE</text></g><path d="M209 130 C240 100 252 93 278 98" fill="none" stroke="#9db58b" stroke-dasharray="4 5" marker-end="url(#arrow-tip)"/><g transform="translate(286 73) matrix(.94,.29,-.34,.86,0,0)" filter="url(#plate-shadow)"><rect width="70" height="70" rx="6" fill="#f5fae7" stroke="#bfd39b"/>${kernel}<text x="-3" y="91" fill="#64815c" font-size="10" font-family="Arial,sans-serif">02 / FILTRE</text></g><path d="M322 159 C356 184 355 204 336 227" fill="none" stroke="#9db58b" stroke-dasharray="4 5" marker-end="url(#arrow-tip)"/><g transform="translate(290 228) matrix(.94,.29,-.34,.86,0,0)" filter="url(#plate-shadow)"><rect width="101" height="101" rx="7" fill="#f9fbf2" stroke="#ceddc1"/>${outputs}<text x="-4" y="125" fill="#64815c" font-size="10" font-family="Arial,sans-serif">03 / CARTE DE MOTIFS</text></g><g transform="translate(250 23)"><rect width="132" height="24" rx="12" fill="#f5f8ee" stroke="#d9e6cc"/><circle cx="12" cy="12" r="3" fill="#89a85c"/><text x="24" y="16" fill="#7b8b71" font-size="9" font-family="Arial,sans-serif">De l’image aux nombres</text></g><circle cx="65" cy="300" r="3" fill="#d3aa82"/><path d="M91 43h10m-5-5v10" stroke="#bdd0a4"/><path d="M402 190h10m-5-5v10" stroke="#bdd0a4"/></svg>`;
+}
+function heroMarkup(){return `<section class="hero"><div class="lesson-topline"><span class="eyebrow">DU PERCEPTRON À LA VISION</span><span class="divider"></span><span class="time">Première année IA</span></div><div class="hero-main"><div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span>CHAPITRE 03 · RÉSEAUX CONVOLUTIFS</div><h1>Comment une IA<br>apprend à <em>voir.</em></h1><p>Une image devient des nombres. Des filtres y cherchent des motifs. Explorons ensemble ce qui se passe, une étape à la fois.</p><div class="hero-actions"><button class="btn primary" id="start-course">Entrer dans le laboratoire <span aria-hidden="true">↗</span></button><small>27 étapes, à votre rythme</small></div></div><div class="hero-visual">${heroIllustration()}<span class="visual-tag">UNE IDÉE À OBSERVER, PUIS À MANIPULER.</span></div></div><div class="hero-method"><div class="method-step"><span aria-hidden="true">◎</span><div><strong>01. Observer</strong><p>Voir les nombres devenir des motifs.</p></div></div><div class="method-step"><span aria-hidden="true">↔</span><div><strong>02. Manipuler</strong><p>Changer un réglage et voir son effet.</p></div></div><div class="method-step"><span aria-hidden="true">✦</span><div><strong>03. Comprendre</strong><p>Expliquer avec vos propres mots.</p></div></div></div><div class="hero-bottom"><div><span class="mission-icon" aria-hidden="true">⌁</span><p><strong>Votre mission : suivre une image, du pixel à la prédiction.</strong>Des rappels, des expériences, puis un défi à résoudre.</p></div><span class="hero-tag"><span class="mini-dot"></span>Aucun prérequis en vision</span></div></section>`;}
+
+function mountDotQuiz(el,q){
+  const signal=renewActivity();
+  el.innerHTML=`<div class="lab"><div class="lab-columns"><div class="matrix-group"><div class="matrix-label">Patch 2 × 2</div><div class="matrix" style="--cols:2">${[1,2,3,4].map(v=>`<span class="cell positive">${v}</span>`).join('')}</div></div><span class="operator" aria-hidden="true">⊙</span><div class="matrix-group"><div class="matrix-label">Filtre 2 × 2</div><div class="matrix" style="--cols:2">${[1,0,0,-1].map(v=>`<span class="cell ${v<0?'negative':''}">${v}</span>`).join('')}</div></div></div><p class="question-label" style="margin-top:22px">Quelle est la somme des produits ? Biais = 0.</p><div class="choices">${q.options.map((o,i)=>`<button class="choice" data-answer="${i}"><span>${String.fromCharCode(65+i)}</span>${escapeHTML(o)}</button>`).join('')}</div><div class="feedback" role="status" hidden></div><button class="btn small" data-retry hidden style="margin-top:12px">Réessayer</button></div>`;
+  let locked=false;
+  el.addEventListener('click',e=>{
+    if(e.target.closest('[data-retry]')){mountDotQuiz(el,q);return;}
+    const target=e.target.closest('[data-answer]');if(!target||locked)return;locked=true;
+    const answer=Number(target.dataset.answer),feedback=$('.feedback',el);feedback.hidden=false;feedback.classList.toggle('error',answer!==q.answer);feedback.textContent=(answer===q.answer?'Exact. ':'Reprenons le calcul. ')+q.explanation;
+    el.querySelectorAll('[data-answer]').forEach(b=>{b.classList.toggle('correct',Number(b.dataset.answer)===q.answer);b.classList.toggle('wrong',b===target&&answer!==q.answer);b.disabled=true;});$('[data-retry]',el).hidden=false;
+  },{signal});
+}
+
+const exerciseLayers=[
+ {name:'Convolution 1',description:'16 filtres · F = 3 · S = 1 · P = 1',shape:[256,256,16],explain:'⌊(256 − 3 + 2 × 1) / 1⌋ + 1 = 256. Les 16 filtres donnent 16 canaux.'},
+ {name:'Max pooling 1',description:'F = 2 · S = 2 · P = 0',shape:[128,128,16],explain:'⌊(256 − 2) / 2⌋ + 1 = 128. Le pooling garde les 16 canaux.'},
+ {name:'Convolution 2',description:'8 filtres · F = 7 · S = 1 · P = 3',shape:[128,128,8],explain:'⌊(128 − 7 + 2 × 3) / 1⌋ + 1 = 128. Les 8 filtres donnent 8 canaux.'},
+ {name:'Max pooling 2',description:'F = 2 · S = 2 · P = 0',shape:[64,64,8],explain:'⌊(128 − 2) / 2⌋ + 1 = 64. Les 8 canaux sont conservés.'}
+];
+function mountExercise(el){
+  const signal=renewActivity();
+  el.innerHTML=`<form class="lab" id="exercise-form"><div class="lab-caption"><span>ENTRÉE : 256 × 256 × 3</span><span>À vous de remplir les 12 cases</span></div><div class="exercise-row exercise-header"><span>Couche</span><span>Hauteur</span><span>Largeur</span><span>Canaux</span></div>${exerciseLayers.map((l,r)=>`<div class="exercise-row" data-row="${r}"><div><strong>${l.name}</strong><span class="layer-description">${l.description}</span></div>${l.shape.map((_,c)=>`<input type="number" inputmode="numeric" min="1" max="4096" step="1" required data-dimension="${r*3+c}" aria-label="${l.name}, ${['hauteur','largeur','canaux'][c]}" placeholder="?" value="${escapeHTML(state.exercise[r*3+c]??'')}">`).join('')}</div>`).join('')}<div class="exercise-actions"><button type="submit" class="btn primary">Vérifier mes dimensions</button><button type="button" class="btn" id="reveal-exercise">Voir la correction</button><button type="button" class="btn ghost" id="clear-exercise">Effacer</button></div><div class="feedback" id="exercise-feedback" role="status" hidden></div><div id="exercise-solution" hidden></div></form>`;
+  el.addEventListener('input',e=>{if(e.target.hasAttribute('data-dimension')){state.exercise[Number(e.target.dataset.dimension)]=e.target.value;save();}},{signal});
+  $('#exercise-form',el).addEventListener('submit',e=>{e.preventDefault();let correct=0;exerciseLayers.forEach((l,r)=>{const ok=l.shape.every((v,c)=>Number(state.exercise[r*3+c])===v);const row=$(`[data-row="${r}"]`,el);row.classList.toggle('correct-row',ok);row.classList.toggle('wrong-row',!ok);if(ok)correct++;});const feedback=$('#exercise-feedback',el);feedback.hidden=false;feedback.classList.toggle('error',correct!==4);feedback.textContent=correct===4?'Les quatre formes sont correctes. La sortie finale est 64 × 64 × 8. Expliquez maintenant pourquoi le nombre de canaux ne change pas au pooling.':`${correct} couche${correct>1?'s':''} sur 4 correcte${correct>1?'s':''}. Reprenez les lignes orangées. Astuce : le pooling conserve les canaux ; la convolution les fixe par le nombre de filtres.`;},{signal});
+  $('#reveal-exercise',el).addEventListener('click',()=>{const box=$('#exercise-solution',el);box.hidden=!box.hidden;$('#reveal-exercise',el).textContent=box.hidden?'Voir la correction':'Masquer la correction';box.innerHTML=exerciseLayers.map(l=>`<div class="challenge-answer"><strong>${l.name} → ${l.shape.join(' × ')}</strong><br>${l.explain}</div>`).join('');},{signal});
+  $('#clear-exercise',el).addEventListener('click',()=>{state.exercise=Array(12).fill('');save();mountExercise(el);},{signal});
+}
+
+const quizQuestions=[
+ {text:'Pourquoi parle-t-on de « partage des poids » ?',options:['Tous les filtres ont les mêmes valeurs.','Un même filtre réutilise ses poids à toutes les positions.','Les poids sont supprimés après chaque calcul.'],answer:1,explanation:'Un filtre conserve ses valeurs lorsqu’il glisse. Deux filtres différents possèdent en revanche leurs propres poids.'},
+ {text:'Entrée 7 × 7, filtre 3 × 3, stride 2, padding 0 : quelle taille de sortie ?',options:['2 × 2','5 × 5','3 × 3'],answer:2,explanation:'⌊(7 − 3 + 0) / 2⌋ + 1 = 3. Le filtre démarre aux positions 0, 2 et 4 sur chaque axe.'},
+ {text:'Pour le bloc [1, 7 ; 3, 5], quelles sont les sorties max et average pooling ?',options:['7 et 4','7 et 5','5 et 4'],answer:0,explanation:'Le maximum est 7. La moyenne vaut (1 + 7 + 3 + 5) / 4 = 4. Ces deux opérations n’apprennent aucun poids.'},
+ {text:'Après flatten, que devient un volume 4 × 4 × 8 ?',options:['Une liste de 16 valeurs.','Une liste de 128 valeurs, toutes conservées.','Une liste de 8 valeurs moyennes.'],answer:1,explanation:'4 × 4 × 8 = 128 valeurs. Flatten change l’organisation, sans supprimer les nombres.'},
+ {text:'Une convolution applique 12 filtres à une image RGB. Combien de canaux possède la sortie ?',options:['3','36','12'],answer:2,explanation:'Chaque filtre combine les trois canaux d’entrée pour produire une seule carte. Douze filtres donnent donc douze canaux de sortie.'}
+];
+function mountQuiz(el){
+  const signal=renewActivity();
+  const qstate=state.quiz;
+  if(qstate.position>=quizQuestions.length){
+    const score=quizQuestions.reduce((sum,q,i)=>sum+(qstate.answers[i]===q.answer?1:0),0);
+    el.innerHTML=`<div class="lab"><div class="quiz-summary"><span class="eyebrow">VOTRE POINT D’ÉTAPE</span><strong>${score} / ${quizQuestions.length}</strong><p>${score===5?'Les notions sont en place. Essayez maintenant de les expliquer à un camarade.':'Repérez les notions à revoir, puis refaites le quiz après une manipulation.'}</p><button class="btn primary" id="retry-quiz">Refaire le quiz</button><div class="quiz-review">${quizQuestions.map((q,i)=>`<p><strong>${qstate.answers[i]===q.answer?'✓':'↺'} ${escapeHTML(q.text)}</strong><br>${escapeHTML(q.explanation)}</p>`).join('')}</div></div></div>`;
+    $('#retry-quiz',el).addEventListener('click',()=>{state.quiz={answers:[],position:0};save();mountQuiz(el);$('.quiz-title',el)?.focus();},{signal});return;
+  }
+  const q=quizQuestions[qstate.position],answered=Number.isInteger(qstate.answers[qstate.position]);
+  el.innerHTML=`<div class="lab"><div class="quiz-progress"><span>QUESTION ${qstate.position+1} / ${quizQuestions.length}</span><span>Une réponse, puis une explication</span></div><h2 class="quiz-title" tabindex="-1">${escapeHTML(q.text)}</h2><div class="choices">${q.options.map((o,i)=>`<button class="choice ${answered&&i===q.answer?'correct':''} ${answered&&qstate.answers[qstate.position]===i&&i!==q.answer?'wrong':''}" data-quiz-answer="${i}" ${answered?'disabled':''}><span>${String.fromCharCode(65+i)}</span>${escapeHTML(o)}</button>`).join('')}</div><div class="feedback ${answered&&qstate.answers[qstate.position]!==q.answer?'error':''}" role="status" ${answered?'':'hidden'}>${answered?escapeHTML(q.explanation):''}</div><div style="margin-top:18px"><button class="btn primary" id="next-question" ${answered?'':'hidden'}>${qstate.position===4?'Voir mon résultat':'Question suivante →'}</button></div></div>`;
+  el.addEventListener('click',e=>{const button=e.target.closest('[data-quiz-answer]');if(button&&!Number.isInteger(state.quiz.answers[state.quiz.position])){state.quiz.answers[state.quiz.position]=Number(button.dataset.quizAnswer);save();mountQuiz(el);$('#next-question',el)?.focus();}},{signal});
+  $('#next-question',el).addEventListener('click',()=>{state.quiz.position++;save();mountQuiz(el);$('.quiz-title',el)?.focus();},{signal});
+}
+function mountRecap(el){const cards=[['01','Convolution','Des connexions locales ; les mêmes poids utilisés partout. Les filtres s’apprennent.'],['02','Dimensions','Le stride et le padding règlent la taille. Le nombre de filtres fixe les canaux de sortie.'],['03','ReLU','max(0, x) : les valeurs négatives deviennent nulles. La forme ne change pas.'],['04','Pooling','Résumer chaque région par un maximum ou une moyenne. Les canaux sont conservés.'],['05','Flatten','Dérouler les valeurs en une liste, sans en perdre et sans apprendre de poids.'],['06','Classification','Combiner les caractéristiques et produire des scores. Vérifier sur des exemples nouveaux.']];el.innerHTML=`<div class="recap-grid">${cards.map(([n,t,p])=>`<article class="recap-card"><span>${n}</span><h3>${t}</h3><p>${p}</p></article>`).join('')}</div><div class="equation">Image → motifs → caractéristiques → scores → prédiction</div>`;}
+function mountChallenge(el){
+  el.innerHTML=`<div class="lab"><span class="pill orange">EN BINÔME · 5 MINUTES</span><h2 style="margin-top:20px;font-family:Georgia,serif;font-weight:400">Construisez le chemin d’un chiffre.</h2><p style="font-size:13px;color:#788974">Votre entrée est une image en niveaux de gris de <strong>28 × 28 × 1</strong>.</p><ol class="challenge-tasks"><li>Convolution : 8 filtres 3 × 3, stride 1, padding 1. Donnez la sortie.</li><li>ReLU, puis max pooling 2 × 2, stride 2. Donnez la sortie.</li><li>Flatten, puis une couche dense de 10 sorties. Combien de valeurs entrent dans la couche dense ?</li><li>Expliquez à votre binôme quelles étapes apprennent des poids.</li></ol><button class="btn primary" id="challenge-reveal" aria-expanded="false">Comparer avec la solution</button><div class="challenge-answer" id="challenge-solution" hidden><p><strong>1.</strong> 28 × 28 × 8 : taille conservée, huit cartes.</p><p><strong>2.</strong> ReLU conserve 28 × 28 × 8 ; le pooling donne 14 × 14 × 8.</p><p><strong>3.</strong> Flatten donne 14 × 14 × 8 = <strong>1 568 valeurs</strong>. La couche dense produit 10 scores.</p><p style="margin-bottom:0"><strong>4.</strong> La convolution et la couche dense apprennent des poids et des biais. ReLU, max pooling et flatten n’en apprennent pas.</p></div><p class="lab-note">Défi supplémentaire : combien de paramètres possède la convolution ? (3 × 3 × 1 + 1 biais) × 8 = 80.</p></div>`;
+  $('#challenge-reveal',el).addEventListener('click',()=>{const box=$('#challenge-solution',el);box.hidden=!box.hidden;$('#challenge-reveal',el).setAttribute('aria-expanded',String(!box.hidden));$('#challenge-reveal',el).textContent=box.hidden?'Comparer avec la solution':'Masquer la solution';},{signal:lessonController.signal});
+}
+function mountFinish(el){
+  el.innerHTML=`<div class="lab finish"><div class="finish-symbol" aria-hidden="true">✦</div><span class="eyebrow">VOUS AVEZ SUIVI LE CHEMIN</span><h2 style="margin-top:15px">Maintenant, racontez-le.</h2><p>Expliquez en une minute comment une image traverse un CNN. Utilisez les mots pixel, filtre, activation, pooling et classification.</p><div class="finish-actions"><button class="btn primary" id="back-to-convolution">Refaire une convolution →</button><a href="fiche-memo.html" target="_blank" rel="noopener" class="btn">Ouvrir la fiche mémo ↗</a><button class="btn ghost" id="reset-progress">Recommencer le parcours</button></div><p class="source-links">Cours de Moussa Diallo · Dakar Institute of Technology<br>Adapté de « CHAPITRE 3_CNN » · Support original conservé<br>Pour approfondir : <a href="https://leon.bottou.org/publications/pdf/ieee-1998.pdf" target="_blank" rel="noopener">article original LeNet-5</a> · <a href="https://docs.pytorch.org/docs/2.15/generated/torch.nn.modules.conv.Conv2d.html" target="_blank" rel="noopener">définition de Conv2d</a><br>Votre position, vos réponses au quiz et vos dimensions sont mémorisées uniquement dans ce navigateur.</p></div>`;
+  $('#back-to-convolution',el).addEventListener('click',()=>go(7),{signal:lessonController.signal});
+  $('#reset-progress',el).addEventListener('click',resetProgress,{signal:lessonController.signal});
+}
+function resetProgress(){state.visited.clear();state.exercise=Array(12).fill('');state.quiz={answers:[],position:0};expanded.clear();state.index=0;history.pushState(null,'','#/'+slides[0].id);save();render();window.scrollTo({top:0,behavior:'instant'});}
+
+const glossary=[['Pixel','Une case de l’image. En niveaux de gris, elle porte une valeur ; en RGB, trois composantes de couleur.'],['Poids et biais','Des nombres ajustés pendant l’apprentissage. Un poids multiplie une entrée ; un biais décale la somme.'],['Filtre ou noyau','Un petit ensemble de poids réutilisé à différentes positions. Dans une convolution standard, il couvre tous les canaux d’entrée.'],['Carte de caractéristiques','Le tableau de réponses d’un filtre aux différentes positions de l’image. Un filtre produit une carte.'],['Canal','Une tranche du volume de données. RGB a trois canaux ; une couche à 16 filtres produit 16 canaux.'],['Stride ou pas','L’écart entre deux positions successives du filtre. Un pas plus grand calcule généralement moins de sorties.'],['Padding','Une bordure ajoutée autour de l’entrée, souvent constituée de zéros.'],['ReLU','La fonction max(0, x), appliquée séparément à chaque valeur. Elle introduit une non-linéarité.'],['Pooling','Une opération qui résume chaque fenêtre par son maximum ou sa moyenne. Le pooling standard n’apprend aucun poids.'],['Flatten','Une réorganisation en une liste. Le nombre total de valeurs reste identique.'],['Softmax','Une transformation des scores en valeurs positives dont la somme vaut 1. Une forte sortie ne garantit pas une prédiction correcte.'],['Entraînement et test','L’entraînement ajuste les poids. Le test utilise des exemples tenus à part pour évaluer la généralisation.']];
+$('#glossary-content').innerHTML='<dl>'+glossary.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('')+'</dl>';
+$('#glossary-button').addEventListener('click',()=>$('#glossary-dialog').showModal());
+$('[data-close]').addEventListener('click',()=>$('#glossary-dialog').close());
+$('#glossary-dialog').addEventListener('click',e=>{if(e.target===$('#glossary-dialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
+$('#notes-button').addEventListener('click',()=>{state.notes=!state.notes;$('#notes-button').setAttribute('aria-pressed',String(state.notes));$('.teacher-notes').hidden=!state.notes;});
+function togglePresentation(){const enabled=document.body.classList.toggle('presenting');$('#present-button').setAttribute('aria-pressed',String(enabled));$('#present-button').setAttribute('aria-label',enabled?'Quitter le mode présentation':'Activer le mode présentation');closeMenu();}
+$('#present-button').addEventListener('click',togglePresentation);
+$('#previous').addEventListener('click',()=>go(state.index-1));
+$('#next').addEventListener('click',()=>state.index===slides.length-1?go(0):go(state.index+1));
+$('#menu-button').addEventListener('click',()=>{const opened=document.body.classList.toggle('menu-open');$('#menu-button').setAttribute('aria-expanded',String(opened));$('#scrim').hidden=!opened;});
+$('#scrim').addEventListener('click',closeMenu);
+$('#course-nav').addEventListener('click',e=>{const link=e.target.closest('[data-slide]');if(link)go(Number(link.dataset.slide));const section=e.target.closest('[data-section]');if(section){const name=sections[Number(section.dataset.section)];expanded.has(name)?expanded.delete(name):expanded.add(name);const panel=$('#section-'+section.dataset.section);panel.hidden=!expanded.has(name);section.setAttribute('aria-expanded',String(expanded.has(name)));$('.chevron',section).textContent=expanded.has(name)?'−':'+';}});
+$('.brand').addEventListener('click',e=>{e.preventDefault();go(0);});
+window.addEventListener('popstate',()=>{const index=indexFromHash();if(index>=0){state.index=index;render();window.scrollTo({top:0,behavior:'instant'});}});
+window.addEventListener('hashchange',()=>{const index=indexFromHash();if(index>=0&&index!==state.index){state.index=index;render();window.scrollTo({top:0,behavior:'instant'});}});
+window.addEventListener('keydown',e=>{
+  if($('#glossary-dialog').open)return;
+  if(e.key==='Escape'){closeMenu();if(document.body.classList.contains('presenting'))togglePresentation();return;}
+  if(e.target.closest('input,select,textarea,[contenteditable="true"]')||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();go(state.index+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(state.index-1);}
+  if(e.key==='Home'){e.preventDefault();go(0);}
+  if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  if(e.key.toLowerCase()==='f'){e.preventDefault();togglePresentation();}
+});
+let lessonController = new AbortController();
+let activityController = new AbortController();
+function renewActivity(){activityController.abort();activityController=new AbortController();return activityController.signal;}
+const originalRender=render;
+render=()=>{lessonController.abort();lessonController=new AbortController();activityController.abort();originalRender();};
+render();
+
+</script>
+</body>
+</html>
